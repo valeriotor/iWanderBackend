@@ -4,12 +4,14 @@ import com.google.common.collect.ImmutableList;
 import com.valeriotor.iWanderBackend.datasource.TravelDataSource;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
 import com.valeriotor.iWanderBackend.model.traveldata.Day;
+import com.valeriotor.iWanderBackend.model.traveldata.LocationTime;
 import com.valeriotor.iWanderBackend.model.traveldata.TravelPlan;
 import com.valeriotor.iWanderBackend.model.traveldata.TravelPlanRedux;
 import com.valeriotor.iWanderBackend.model.traveldata.temp.IdentitylessTravelPlan;
 import com.valeriotor.iWanderBackend.util.IntRange;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -19,13 +21,18 @@ public class EmulatedTravelDataSource implements TravelDataSource {
     private final Map<Long, Set<TravelPlan>> travelsByUserId = new HashMap<>();
 
     public EmulatedTravelDataSource() {
-        Day d = new Day(0, LocalDate.of(2021, 10, 1), null, new ArrayList<>());
-        List<Day> dayz = ImmutableList.of(d);
-        addTravel(0, new IdentitylessTravelPlan("Roma", VisibilityType.PUBLIC, dayz));
-        addTravel(0, new IdentitylessTravelPlan("Zurigo", VisibilityType.PUBLIC, dayz));
-        addTravel(1, new IdentitylessTravelPlan("Parigi", VisibilityType.PUBLIC, dayz));
-        addTravel(2, new IdentitylessTravelPlan("Genova", VisibilityType.PUBLIC, dayz));
-        addTravel(1, new IdentitylessTravelPlan("Casablanca", VisibilityType.PUBLIC, dayz));
+        LocationTime pantheon = new LocationTime(LocalTime.of(23, 44), 1, 1, "Pantheon", "dummy");
+        Day d = new Day(0, LocalDate.of(2021, 10, 1), null, ImmutableList.of(pantheon));
+        Day d2 = new Day(0, LocalDate.of(2021, 10, 4), null, new ArrayList<>());
+        List<Day> days1 = ImmutableList.of(d);
+        List<Day> days2 = ImmutableList.of(d2);
+        List<Day> days3 = ImmutableList.of(d, d2);
+        addTravel(0, new IdentitylessTravelPlan("Roma", VisibilityType.PUBLIC, days1));
+        addTravel(0, new IdentitylessTravelPlan("Zurigo", VisibilityType.PUBLIC, days2));
+        addTravel(0, new IdentitylessTravelPlan("San Francisco", VisibilityType.PUBLIC, days3));
+        addTravel(1, new IdentitylessTravelPlan("Parigi", VisibilityType.PUBLIC, days1));
+        addTravel(2, new IdentitylessTravelPlan("Genova", VisibilityType.PUBLIC, days1));
+        addTravel(1, new IdentitylessTravelPlan("Casablanca", VisibilityType.PUBLIC, days1));
     }
 
     @Override

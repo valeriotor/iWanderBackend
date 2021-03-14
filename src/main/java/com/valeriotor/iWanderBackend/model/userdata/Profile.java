@@ -6,7 +6,7 @@ import com.valeriotor.iWanderBackend.util.IntRange;
 
 import java.util.List;
 
-public class Profile implements Comparable<Profile>{
+public class Profile implements Comparable<Profile>{ // Will require an extended userdata class/set of classes
     private final long userId;
     private final String username;
     private final AccountType associatedAccountType;

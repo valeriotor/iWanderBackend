@@ -12,4 +12,20 @@ public class City {
         this.longitude = longitude;
         this.name = name;
     }
+
+    public String getCityID() {
+        return cityID;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

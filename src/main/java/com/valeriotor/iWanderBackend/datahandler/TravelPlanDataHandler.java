@@ -1,5 +1,6 @@
 package com.valeriotor.iWanderBackend.datahandler;
 
+import com.google.common.collect.ImmutableList;
 import com.valeriotor.iWanderBackend.datasource.TravelDataSource;
 import com.valeriotor.iWanderBackend.datasource.emulated.EmulatedTravelDataSource;
 import com.valeriotor.iWanderBackend.model.traveldata.TravelPlan;
@@ -22,6 +23,7 @@ public class TravelPlanDataHandler {
     }
 
     public List<TravelPlanRedux> getTravelsForUser(long userId, IntRange range) {
+        if(range == null) return ImmutableList.of();
         return travelDataSource.getTravelsForUser(userId, range);
     }
 

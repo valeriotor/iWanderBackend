@@ -9,11 +9,31 @@ public class LocationTime {
     private final String name;
     private final String nameId;
 
-    private LocationTime(LocalTime timeStamp, double latitude, double longitude, String name, String nameId) {
+    public LocationTime(LocalTime timeStamp, double latitude, double longitude, String name, String nameId) {
         this.timeStamp = timeStamp;
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;
         this.nameId = nameId;
+    }
+
+    public LocalTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getNameId() {
+        return nameId;
     }
 }

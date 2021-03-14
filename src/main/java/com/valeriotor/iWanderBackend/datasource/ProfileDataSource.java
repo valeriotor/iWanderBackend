@@ -1,6 +1,7 @@
 package com.valeriotor.iWanderBackend.datasource;
 
 import com.valeriotor.iWanderBackend.model.userdata.Profile;
+import com.valeriotor.iWanderBackend.model.userdata.temp.IdentitylessProfile;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ public interface ProfileDataSource {
 
     Optional<Profile> findUserById(long id);
 
-    boolean addProfile(Profile profile);
+    Profile addProfile(IdentitylessProfile profile);
 
     long getUserCount();
 }

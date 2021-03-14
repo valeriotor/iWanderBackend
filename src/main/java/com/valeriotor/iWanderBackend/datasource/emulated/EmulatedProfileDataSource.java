@@ -3,9 +3,11 @@ package com.valeriotor.iWanderBackend.datasource.emulated;
 import com.valeriotor.iWanderBackend.datasource.ProfileDataSource;
 import com.valeriotor.iWanderBackend.model.userdata.AccountType;
 import com.valeriotor.iWanderBackend.model.userdata.Profile;
+import com.valeriotor.iWanderBackend.model.userdata.temp.IdentitylessProfile;
 import com.valeriotor.iWanderBackend.util.IntRange;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class EmulatedProfileDataSource implements ProfileDataSource {
@@ -37,12 +39,31 @@ public class EmulatedProfileDataSource implements ProfileDataSource {
     }
 
     @Override
-    public boolean addProfile(Profile profile) {
-        return profiles.add(profile);
+    public Profile addProfile(IdentitylessProfile profile) {
+        Random r = ThreadLocalRandom.current();
+        long id = r.nextLong();
+        int countCheck = 0;
+        while (profileSetContainsId(id)) {
+            id = r.nextLong();
+            countCheck++;
+            if(countCheck > 1000)
+                throw new RuntimeException();
+        }
+        Profile profileWithId = profile.create(id);
+        profiles.add(profile.create(id));
+        return profileWithId;
     }
 
     @Override
     public long getUserCount() {
         return profiles.size();
+    }
+
+    private boolean profileSetContainsId(long id) {
+        for(Profile p : profiles) {
+            if (p.getUserId() == id)
+                return true;
+        }
+        return false;
     }
 }

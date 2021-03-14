@@ -17,7 +17,7 @@ public class TravelPlanDataHandlerTests {
         TravelPlanDataHandler dataHandler = DataHandlers.getTravelPlanDataHandler();
         long userId = 0;
         List<TravelPlanRedux> plansBy0 = dataHandler.getTravelsForUser(userId, IntRange.of(0, 4));
-        assert plansBy0.size() == 2;
+        assert plansBy0.size() == 3;
     }
 
     @Test

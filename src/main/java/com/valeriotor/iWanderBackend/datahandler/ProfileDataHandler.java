@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.valeriotor.iWanderBackend.datasource.ProfileDataSource;
 import com.valeriotor.iWanderBackend.datasource.emulated.EmulatedProfileDataSource;
 import com.valeriotor.iWanderBackend.model.userdata.Profile;
+import com.valeriotor.iWanderBackend.model.userdata.temp.IdentitylessProfile;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +21,7 @@ public class ProfileDataHandler {
         return source.findUsersByPrefix(prefix, range);
     }
 
-    public boolean addUser(Profile profile) {
+    public Profile addUser(IdentitylessProfile profile) {
         return source.addProfile(profile);
     }
 
