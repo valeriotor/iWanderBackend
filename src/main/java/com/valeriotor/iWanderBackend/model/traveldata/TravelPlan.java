@@ -48,6 +48,10 @@ public class TravelPlan implements Comparable<TravelPlan>{
         return days;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
     @Override
     public int compareTo(TravelPlan o) {
         int dateCompare = startDate.compareTo(o.startDate);
