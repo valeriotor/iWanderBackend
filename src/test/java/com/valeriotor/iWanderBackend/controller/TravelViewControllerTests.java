@@ -20,9 +20,8 @@ public class TravelViewControllerTests {
 
     @Test
     public void testGetTravelsByUserID() {
-        String json = testController.getTravelsByUserID(0, 0, 4);
+        List<TravelPlanRedux> travelPlanReduxes = testController.getTravelsByUserID(0, 0, 4);
         Type type = new TypeToken<ArrayList<TravelPlanRedux>>(){}.getType();
-        List<TravelPlanRedux> travelPlanReduxes = GSONUtil.getGson().fromJson(json, type);
         assert travelPlanReduxes.size() == 3;
         assert travelPlanReduxes.get(2).getName().equals("Zurigo");
         int id = travelPlanReduxes.get(0).getId();
@@ -30,17 +29,15 @@ public class TravelViewControllerTests {
     }
 
     private void testGetDaysForTravel(int travelId) {
-        String json = testController.getDaysForTravel(0, travelId, 0, 4);
+        List<DayRedux> dayReduxes = testController.getDaysForTravel(0, travelId, 0, 4);
         Type type = new TypeToken<ArrayList<DayRedux>>(){}.getType();
-        List<DayRedux> dayReduxes = GSONUtil.getGson().fromJson(json, type);
         assert dayReduxes.get(0).date.equals(LocalDate.of(2021, 10, 1));
         testGetLocationTimesForDay(travelId);
     }
 
     private void testGetLocationTimesForDay(int travelId) {
-        String json = testController.getLocationTimesForDay(0, travelId,0, 0, 4);
+        List<LocationTime> dayReduxes = testController.getLocationTimesForDay(0, travelId,0, 0, 4);
         Type type = new TypeToken<ArrayList<LocationTime>>(){}.getType();
-        List<LocationTime> dayReduxes = GSONUtil.getGson().fromJson(json, type);
         assert dayReduxes.size() == 1;
         assert dayReduxes.get(0).getName().equals("Pantheon");
     }

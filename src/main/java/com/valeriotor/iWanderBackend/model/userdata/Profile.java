@@ -4,13 +4,26 @@ import com.valeriotor.iWanderBackend.model.VisibilityType;
 import com.valeriotor.iWanderBackend.model.traveldata.TravelPlan;
 import com.valeriotor.iWanderBackend.util.IntRange;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Profile implements Comparable<Profile>{ // Will require an extended userdata class/set of classes
+
+    @Id
+    @GeneratedValue
     private final long userId;
     private final String username;
+
+    @Enumerated
+    @Column(columnDefinition = "smallint")
     private final AccountType associatedAccountType;
+
     private final String associatedAccountUsername;
+
+    public Profile(){
+        this(0, "", AccountType.APPLE, "");
+    }
 
     public Profile(long userId, String username, AccountType associatedAccountType, String associatedAccountUsername) {
         this.userId = userId;
@@ -94,8 +107,8 @@ public class Profile implements Comparable<Profile>{ // Will require an extended
     }
 
     public static class ProfileRedux {
-        private final long userId;
-        private final String username;
+        public final long userId;
+        public final String username;
 
         private ProfileRedux(Profile profile) {
             this.userId = profile.getUserId();

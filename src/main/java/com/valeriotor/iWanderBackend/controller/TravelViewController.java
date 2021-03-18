@@ -21,34 +21,31 @@ import java.util.stream.Collectors;
 public class TravelViewController {
 
     @RequestMapping("/getTravel")
-    public String getTravelsByUserID(long userId, int start, int end) {
-        List<TravelPlanRedux> planReduxList = DataHandlers.getTravelPlanDataHandler().getTravelsForUser(userId, IntRange.of(start, end));
-        return GSONUtil.getGson().toJson(planReduxList);
+    public List<TravelPlanRedux> getTravelsByUserID(long userId, int start, int end) {
+        return DataHandlers.getTravelPlanDataHandler().getTravelsForUser(userId, IntRange.of(start, end));
     }
 
     @RequestMapping("/getDays")
-    public String getDaysForTravel(long userId, int travelId, int start, int end) {
+    public List<DayRedux> getDaysForTravel(long userId, int travelId, int start, int end) {
         Optional<TravelPlan> planOptional = DataHandlers.getTravelPlanDataHandler().getTravel(userId, travelId);
         IntRange range = IntRange.of(start, end);
-        if(planOptional.isEmpty()) return "[]";
-        if(range == null) return "[]";
+        if(planOptional.isEmpty()) return ImmutableList.of();
+        if(range == null) return ImmutableList.of();
         TravelPlan plan = planOptional.get();
         List<DayRedux> dayList = plan.getDays().stream().map(DayRedux::new).collect(Collectors.toCollection(ArrayList::new));
-        List<DayRedux> toSend = range.getSublist(dayList);
-        return GSONUtil.getGson().toJson(toSend);
+        return range.getSublist(dayList);
     }
 
     @RequestMapping("/getLocationTimes")
-    public String getLocationTimesForDay(long userId, int travelId, int dayIndex, int start, int end) {
+    public List<LocationTime> getLocationTimesForDay(long userId, int travelId, int dayIndex, int start, int end) {
         Optional<TravelPlan> planOptional = DataHandlers.getTravelPlanDataHandler().getTravel(userId, travelId);
         IntRange range = IntRange.of(start, end);
-        if(range == null) return "[]";
-        if(planOptional.isEmpty()) return "[]";
+        if(range == null) return ImmutableList.of();
+        if(planOptional.isEmpty()) return ImmutableList.of();
         List<Day> days = planOptional.get().getDays();
-        if(dayIndex < 0 || dayIndex >= days.size()) return "[]";
+        if(dayIndex < 0 || dayIndex >= days.size()) return ImmutableList.of();
         Day day = days.get(dayIndex);
-        List<LocationTime> toSend = range.getSublist(day.getDestinations());
-        return GSONUtil.getGson().toJson(toSend);
+        return range.getSublist(day.getDestinations());
     }
 
 
