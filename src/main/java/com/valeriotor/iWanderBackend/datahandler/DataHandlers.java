@@ -6,16 +6,18 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class DataHandlers {
 
+
+
     @Autowired
-    private static ProfileDataHandler profileDataHandler;
+    private ProfileDataHandler profileDataHandler;
+    @Autowired
+    private TravelPlanDataHandler travelPlanDataHandler;
 
-    private static final TravelPlanDataHandler travelPlanDataHandler = new TravelPlanDataHandler();
-
-    public static ProfileDataHandler getProfileDataHandler() {
+    public ProfileDataHandler getProfileDataHandler() {
         return profileDataHandler;
     }
 
-    public static TravelPlanDataHandler getTravelPlanDataHandler() {
+    public TravelPlanDataHandler getTravelPlanDataHandler() {
         return travelPlanDataHandler;
     }
 }

@@ -1,41 +1,62 @@
 package com.valeriotor.iWanderBackend.model.traveldata;
 
-import com.google.common.collect.ImmutableList;
 import com.valeriotor.iWanderBackend.util.IntRange;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Day {
-    private final int index;
+@Entity
+public class Day implements SingleDateObject, Comparable<Day>{
+    private final long userId;
+    private final long travelPlanId;
+    @Id
+    @GeneratedValue
+    private final long id;
     private final LocalDate date;
-    private final City city;
-    private final List<LocationTime> destinations;
+    private final String cityID;
 
-    public Day(int index, LocalDate date, City city, List<LocationTime> destinations) {
-        this.index = index;
+    public Day() {
+        this(0, 0, 0, null, null);
+    }
+
+    public Day(long userId, long travelPlanId, long id, LocalDate date, String cityID) {
+        this.userId = userId;
+        this.id = id;
+        this.travelPlanId = travelPlanId;
         this.date = date;
-        this.city = city;
-        this.destinations = ImmutableList.copyOf(destinations);
+        this.cityID = cityID;
     }
 
     private List<LocationTime> getLocationTimes(IntRange range) {
         return null;
     }
 
-    public int getIndex() {
-        return index;
+    public long getId() {
+        return id;
     }
 
     public LocalDate getDate() {
         return date;
     }
 
-    public City getCity() {
-        return city;
+    public String getCityID() {
+        return cityID;
     }
 
-    public List<LocationTime> getDestinations() {
-        return destinations;
+    public long getUserId() {
+        return userId;
+    }
+
+    public long getTravelPlanId() {
+        return travelPlanId;
+    }
+
+    @Override
+    public int compareTo(Day o) {
+        return date.compareTo(o.getDate());
     }
 }

@@ -1,7 +1,6 @@
 package com.valeriotor.iWanderBackend.controller;
 
 import com.valeriotor.iWanderBackend.datahandler.ProfileDataHandler;
-import com.valeriotor.iWanderBackend.datahandler.ProfileRepo;
 import com.valeriotor.iWanderBackend.model.userdata.Profile;
 import com.valeriotor.iWanderBackend.model.userdata.Profile.ProfileRedux;
 import com.valeriotor.iWanderBackend.util.IntRange;

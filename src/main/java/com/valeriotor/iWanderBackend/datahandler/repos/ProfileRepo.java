@@ -1,4 +1,4 @@
-package com.valeriotor.iWanderBackend.datahandler;
+package com.valeriotor.iWanderBackend.datahandler.repos;
 
 import com.valeriotor.iWanderBackend.model.userdata.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;

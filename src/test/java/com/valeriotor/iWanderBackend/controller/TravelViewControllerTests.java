@@ -6,6 +6,7 @@ import com.valeriotor.iWanderBackend.model.traveldata.LocationTime;
 import com.valeriotor.iWanderBackend.model.traveldata.TravelPlanRedux;
 import com.valeriotor.iWanderBackend.util.GSONUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.Type;
@@ -16,30 +17,29 @@ import java.util.List;
 @SpringBootTest
 public class TravelViewControllerTests {
 
-    private final TravelViewController testController = new TravelViewController();
+    @Autowired
+    private TravelViewController testController;
 
     @Test
     public void testGetTravelsByUserID() {
-        List<TravelPlanRedux> travelPlanReduxes = testController.getTravelsByUserID(0, 0, 4);
+        List<TravelPlanRedux> travelPlanReduxes = testController.getTravelsByUserID(-5, 0, 4);
         Type type = new TypeToken<ArrayList<TravelPlanRedux>>(){}.getType();
         assert travelPlanReduxes.size() == 3;
         assert travelPlanReduxes.get(2).getName().equals("Zurigo");
-        int id = travelPlanReduxes.get(0).getId();
+        long id = travelPlanReduxes.get(0).getId();
         testGetDaysForTravel(id);
     }
 
-    private void testGetDaysForTravel(int travelId) {
-        List<DayRedux> dayReduxes = testController.getDaysForTravel(0, travelId, 0, 4);
-        Type type = new TypeToken<ArrayList<DayRedux>>(){}.getType();
+    private void testGetDaysForTravel(long travelId) {
+        List<DayRedux> dayReduxes = testController.getDaysForTravel(-5, travelId, 0, 4);
         assert dayReduxes.get(0).date.equals(LocalDate.of(2021, 10, 1));
         testGetLocationTimesForDay(travelId);
     }
 
-    private void testGetLocationTimesForDay(int travelId) {
-        List<LocationTime> dayReduxes = testController.getLocationTimesForDay(0, travelId,0, 0, 4);
-        Type type = new TypeToken<ArrayList<LocationTime>>(){}.getType();
-        assert dayReduxes.size() == 1;
-        assert dayReduxes.get(0).getName().equals("Pantheon");
+    private void testGetLocationTimesForDay(long travelId) {
+        List<LocationTime> locationTimesForDay = testController.getLocationTimesForDay(-5, travelId,0, 0, 4);
+        assert locationTimesForDay.size() == 1;
+        assert locationTimesForDay.get(0).getName().equals("Pantheon");
     }
 
 }

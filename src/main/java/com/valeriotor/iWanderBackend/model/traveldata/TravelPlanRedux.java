@@ -5,12 +5,12 @@ import com.valeriotor.iWanderBackend.model.VisibilityType;
 import java.time.LocalDate;
 
 public class TravelPlanRedux {
-    private final int id;
+    private final long id;
     private final String name;
     private final VisibilityType visibility;
     private final LocalDate startDate;
 
-    public TravelPlanRedux(int id, String name, VisibilityType visibility, LocalDate startDate) {
+    public TravelPlanRedux(long id, String name, VisibilityType visibility, LocalDate startDate) {
         this.id = id;
         this.name = name;
         this.visibility = visibility;
@@ -21,7 +21,7 @@ public class TravelPlanRedux {
         this(plan.getId(), plan.getName(), plan.getVisibility(), plan.getStartDate());
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

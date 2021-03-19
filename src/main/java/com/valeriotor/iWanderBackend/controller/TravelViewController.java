@@ -1,51 +1,47 @@
 package com.valeriotor.iWanderBackend.controller;
 
 import com.google.common.collect.ImmutableList;
-import com.valeriotor.iWanderBackend.datahandler.DataHandlers;
+import com.valeriotor.iWanderBackend.datahandler.TravelPlanDataHandler;
+import com.valeriotor.iWanderBackend.model.traveldata.City;
 import com.valeriotor.iWanderBackend.model.traveldata.Day;
 import com.valeriotor.iWanderBackend.model.traveldata.LocationTime;
-import com.valeriotor.iWanderBackend.model.traveldata.TravelPlan;
 import com.valeriotor.iWanderBackend.model.traveldata.TravelPlanRedux;
-import com.valeriotor.iWanderBackend.util.GSONUtil;
 import com.valeriotor.iWanderBackend.util.IntRange;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 public class TravelViewController {
 
+    @Autowired
+    private TravelPlanDataHandler travelPlanDataHandler;
+
     @RequestMapping("/getTravel")
     public List<TravelPlanRedux> getTravelsByUserID(long userId, int start, int end) {
-        return DataHandlers.getTravelPlanDataHandler().getTravelsForUser(userId, IntRange.of(start, end));
+        return travelPlanDataHandler.getTravelsForUser(userId, IntRange.of(start, end));
     }
 
     @RequestMapping("/getDays")
-    public List<DayRedux> getDaysForTravel(long userId, int travelId, int start, int end) {
-        Optional<TravelPlan> planOptional = DataHandlers.getTravelPlanDataHandler().getTravel(userId, travelId);
+    public List<DayRedux> getDaysForTravel(long userId, long travelId, int start, int end) {
         IntRange range = IntRange.of(start, end);
-        if(planOptional.isEmpty()) return ImmutableList.of();
         if(range == null) return ImmutableList.of();
-        TravelPlan plan = planOptional.get();
-        List<DayRedux> dayList = plan.getDays().stream().map(DayRedux::new).collect(Collectors.toCollection(ArrayList::new));
-        return range.getSublist(dayList);
+        List<Day> days = range.getSublist(travelPlanDataHandler.getDaysByTravelId(userId, travelId));
+        return days.stream().map(DayRedux::new).collect(Collectors.toList());
     }
 
     @RequestMapping("/getLocationTimes")
-    public List<LocationTime> getLocationTimesForDay(long userId, int travelId, int dayIndex, int start, int end) {
-        Optional<TravelPlan> planOptional = DataHandlers.getTravelPlanDataHandler().getTravel(userId, travelId);
+    public List<LocationTime> getLocationTimesForDay(long userId, long travelId, int dayIndex, int start, int end) {
+        List<Day> days = travelPlanDataHandler.getDaysByTravelId(userId, travelId);
         IntRange range = IntRange.of(start, end);
         if(range == null) return ImmutableList.of();
-        if(planOptional.isEmpty()) return ImmutableList.of();
-        List<Day> days = planOptional.get().getDays();
-        if(dayIndex < 0 || dayIndex >= days.size()) return ImmutableList.of();
-        Day day = days.get(dayIndex);
-        return range.getSublist(day.getDestinations());
+        if(dayIndex >= days.size() || dayIndex < 0) return ImmutableList.of();
+        Day d = days.get(dayIndex);
+        return travelPlanDataHandler.getLocationTimesByDayId(d.getId());
     }
 
 
@@ -54,8 +50,16 @@ public class TravelViewController {
         final LocalDate date;
 
         private DayRedux(Day day) {
-            this.cityName = day.getCity() != null ? day.getCity().getName() : "DummyCity";
+            this.cityName = "DummyCity";
             this.date = day.getDate();
+        }
+
+        public String getCityName() {
+            return cityName;
+        }
+
+        public LocalDate getDate() {
+            return date;
         }
     }
 

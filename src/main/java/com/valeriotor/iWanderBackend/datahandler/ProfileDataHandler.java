@@ -1,6 +1,7 @@
 package com.valeriotor.iWanderBackend.datahandler;
 
 import com.google.common.collect.ImmutableList;
+import com.valeriotor.iWanderBackend.datahandler.repos.ProfileRepo;
 import com.valeriotor.iWanderBackend.model.userdata.Profile;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.beans.factory.annotation.Autowired;
