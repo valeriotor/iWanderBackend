@@ -2,6 +2,7 @@ package com.valeriotor.iWanderBackend.model.traveldata;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalTime;
 @Entity
 public class LocationTime {
@@ -55,5 +56,22 @@ public class LocationTime {
 
     public long getLocationTimeId() {
         return locationTimeId;
+    }
+
+    public LocationTime withDayId(long dayId) {
+        return new LocationTime(locationTimeId, dayId, timeStamp, latitude, longitude, name, nameId);
+    }
+
+    @Override
+    public String toString() {
+        return "LocationTime{" +
+                "locationTimeId=" + locationTimeId +
+                ", dayId=" + dayId +
+                ", timeStamp=" + timeStamp +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", name='" + name + '\'' +
+                ", nameId='" + nameId + '\'' +
+                '}';
     }
 }

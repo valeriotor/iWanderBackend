@@ -54,7 +54,7 @@ public class SerializableDay implements SingleDateObject {
     }
 
     public Day toDay() {
-        return new Day(userId, travelPlanId, id, date, cityID);
+        return new Day(travelPlanId, id, date, cityID);
     }
 
 }

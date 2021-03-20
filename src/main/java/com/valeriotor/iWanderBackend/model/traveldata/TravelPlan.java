@@ -8,13 +8,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 @Entity
-@IdClass(TravelPlan.TravelPlanID.class)
 public class TravelPlan implements Comparable<TravelPlan>{
-    @Id
-    private final long userId;
     @Id
     @GeneratedValue
     private final long id;
+    private final long userId;
     private final String name;
     @Enumerated
     @Column(columnDefinition = "smallint")
@@ -72,43 +70,13 @@ public class TravelPlan implements Comparable<TravelPlan>{
         return startDate;
     }
 
+    public TravelPlan withName(String newName) {
+        return new TravelPlan(userId, id, newName, visibility, startDate, endDate);
+    }
+
     @Override
     public int compareTo(TravelPlan o) {
         int dateCompare = startDate.compareTo(o.startDate);
         return dateCompare == 0 ? Long.compare(id, o.getId()) : dateCompare;
     }
-
-    public static class TravelPlanID implements Serializable {
-        private final long userId;
-        private final long id;
-
-        public TravelPlanID() {
-            this(0, 0);
-        }
-
-        public TravelPlanID(long userId, long id) {
-            this.userId = userId;
-            this.id = id;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            TravelPlanID that = (TravelPlanID) o;
-
-            if (userId != that.userId) return false;
-            return id == that.id;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = (int) (userId ^ (userId >>> 32));
-            result = 31 * result + (int) (id ^ (id >>> 32));
-            return result;
-        }
-    }
-
-
 }

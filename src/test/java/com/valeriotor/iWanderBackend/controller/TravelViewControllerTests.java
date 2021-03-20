@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import com.valeriotor.iWanderBackend.controller.TravelViewController.DayRedux;
 import com.valeriotor.iWanderBackend.model.traveldata.LocationTime;
 import com.valeriotor.iWanderBackend.model.traveldata.TravelPlanRedux;
-import com.valeriotor.iWanderBackend.util.GSONUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,13 +30,13 @@ public class TravelViewControllerTests {
     }
 
     private void testGetDaysForTravel(long travelId) {
-        List<DayRedux> dayReduxes = testController.getDaysForTravel(-5, travelId, 0, 4);
-        assert dayReduxes.get(0).date.equals(LocalDate.of(2021, 10, 1));
+        List<DayRedux> dayReduxes = testController.getDaysForTravel(travelId, 0, 4);
+        assert dayReduxes.get(0).date.equals(LocalDate.of(2021, 9, 1));
         testGetLocationTimesForDay(travelId);
     }
 
     private void testGetLocationTimesForDay(long travelId) {
-        List<LocationTime> locationTimesForDay = testController.getLocationTimesForDay(-5, travelId,0, 0, 4);
+        List<LocationTime> locationTimesForDay = testController.getLocationTimesForDay(travelId,0, 0, 4);
         assert locationTimesForDay.size() == 1;
         assert locationTimesForDay.get(0).getName().equals("Pantheon");
     }

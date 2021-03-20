@@ -5,30 +5,31 @@ import com.valeriotor.iWanderBackend.util.IntRange;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 public class Day implements SingleDateObject, Comparable<Day>{
-    private final long userId;
     private final long travelPlanId;
     @Id
     @GeneratedValue
     private final long id;
     private final LocalDate date;
-    private final String cityID;
+    private final String cityId;
 
     public Day() {
-        this(0, 0, 0, null, null);
+        this(0, 0, null, null);
     }
 
-    public Day(long userId, long travelPlanId, long id, LocalDate date, String cityID) {
-        this.userId = userId;
+    public Day(long travelPlanId, long id, LocalDate date, String cityId) {
         this.id = id;
         this.travelPlanId = travelPlanId;
         this.date = date;
-        this.cityID = cityID;
+        this.cityId = cityId;
+    }
+
+    public Day(TravelPlan plan, long id, LocalDate date, String cityId) {
+        this(plan.getId(), id, date, cityId);
     }
 
     private List<LocationTime> getLocationTimes(IntRange range) {
@@ -43,16 +44,16 @@ public class Day implements SingleDateObject, Comparable<Day>{
         return date;
     }
 
-    public String getCityID() {
-        return cityID;
-    }
-
-    public long getUserId() {
-        return userId;
+    public String getCityId() {
+        return cityId;
     }
 
     public long getTravelPlanId() {
         return travelPlanId;
+    }
+
+    public Day withTravelId(long travelId) {
+        return new Day(travelId, id, date, cityId);
     }
 
     @Override

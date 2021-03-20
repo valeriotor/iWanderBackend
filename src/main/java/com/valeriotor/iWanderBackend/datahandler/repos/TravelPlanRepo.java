@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface TravelPlanRepo extends JpaRepository<TravelPlan, TravelPlan.TravelPlanID> {
+public interface TravelPlanRepo extends JpaRepository<TravelPlan, Long> {
     List<TravelPlan> findAllByUserIdIn(List<Long> userId);
 }
