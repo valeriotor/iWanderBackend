@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,17 +37,19 @@ public class TravelViewController {
 
     @RequestMapping("/getLocationTimes")
     public List<LocationTime> getLocationTimesForDay(long travelId, int dayIndex, int start, int end) {
-        List<Day> days = travelPlanDataHandler.getDaysByTravelId(travelId);
         IntRange range = IntRange.of(start, end);
         if(range == null) return ImmutableList.of();
-        if(dayIndex >= days.size() || dayIndex < 0) return ImmutableList.of();
-        Day d = days.get(dayIndex);
-        return travelPlanDataHandler.getLocationTimesByDayId(d.getId());
+        return travelPlanDataHandler.getLocationTimesForDayAtIndex(travelId, dayIndex);
     }
 
     @RequestMapping("/renameTravel")
     public void renameTravel(long travelId, String newName) {
         travelPlanDataHandler.renameTravel(travelId, newName);
+    }
+
+    @RequestMapping("/deleteTravel")
+    public void deleteTravel(long travelId) {
+        travelPlanDataHandler.deleteTravel(travelId);
     }
 
 

@@ -28,7 +28,8 @@ public class SerializableTravelPlan {
     }
 
     public TravelPlan toTravelPlan() {
-        return new TravelPlan(userId, id, name, visibility, days);
+        //return new TravelPlan(userId, id, name, visibility, days);
+        return null;
     }
 
     public long getId() {

@@ -6,8 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @SpringBootTest
 public class TravelPlanDataHandlerTests {
@@ -30,21 +34,30 @@ public class TravelPlanDataHandlerTests {
     }
 
     @Test
-    public void testUpdateTravel() {
+    public void testUpdateTravel() throws CloneNotSupportedException {
         long userId = -5;
         TravelPlan firstPlan = getFirstTravel(dataHandler, userId);
-        List<Day> firstPlanDays = dataHandler.getDaysByTravelId(firstPlan.getId());
-        List<List<LocationTime>> firstPlanLocationTimes = dataHandler.getLocationTimesByDaysIn(firstPlanDays);
-        Day lastDay = firstPlanDays.get(firstPlanDays.size()-1);
-        firstPlanDays.add(new Day(firstPlan.getId(), 0, lastDay.getDate().plusDays(1), lastDay.getCityId()));
-        firstPlanLocationTimes.add(new ArrayList<>());
-        TravelDataContainer container = new TravelDataContainer(firstPlan, firstPlanDays, firstPlanLocationTimes);
-        dataHandler.updateTravel(container);
+        List<Day> days = firstPlan.getDays();
+        List<List<LocationTime>> locationTimes = days.stream().map(Day::getLocationTimes).collect(toList());
+
+        TravelPlan newPlan = new TravelPlan(firstPlan.getUserId(), firstPlan.getId(), firstPlan.getName(), firstPlan.getVisibility(), new ArrayList<>());
+
+        List<Day> clonedDays = days.stream().map(d -> new Day(d.getId(), d.getDate(), d.getCityId(), newPlan, new ArrayList<>())).collect(toList());
+
+        for(int i = 0; i < clonedDays.size(); i++) {
+            Day d = clonedDays.get(i);
+            List<LocationTime> copied = locationTimes.get(i).stream()
+                    .map(lt -> new LocationTime(lt.getLocationTimeId(), lt.getTimeStamp(), lt.getLatitude(), lt.getLongitude(), lt.getName(), lt.getNameId(), d))
+                    .collect(toList());
+            d.setLocationTimes(copied);
+        }
+        newPlan.setDays(clonedDays);
+        dataHandler.updateTravel(newPlan);
         TravelPlan updatedPlan = getFirstTravel(dataHandler, userId);
-        List<Day> newPlanDays = dataHandler.getDaysByTravelId(updatedPlan.getId());
-        List<List<LocationTime>> newPlanLocationTimes = dataHandler.getLocationTimesByDaysIn(newPlanDays);
-        assert newPlanDays.size() == firstPlanDays.size(); // Note: we already increased firstPlanDays size by one
-        assert newPlanLocationTimes.get(0).size() == firstPlanLocationTimes.get(0).size();
+        List<Day> newPlanDays = updatedPlan.getDays();
+        List<LocationTime> newPlanFirstDayLocationTimes = newPlanDays.get(0).getLocationTimes();
+        assert newPlanDays.size() == days.size();
+        assert newPlanFirstDayLocationTimes.size() == days.get(0).getLocationTimes().size();
     }
 
     private TravelPlanRedux getFirstTravelRedux(TravelPlanDataHandler dataHandler, long userId) {

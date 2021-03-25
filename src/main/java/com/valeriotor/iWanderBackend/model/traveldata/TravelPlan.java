@@ -1,11 +1,12 @@
 package com.valeriotor.iWanderBackend.model.traveldata;
 
+import com.google.common.collect.ImmutableList;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
 import com.valeriotor.iWanderBackend.util.IntRange;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 public class TravelPlan implements Comparable<TravelPlan>{
@@ -17,33 +18,34 @@ public class TravelPlan implements Comparable<TravelPlan>{
     @Enumerated
     @Column(columnDefinition = "smallint")
     private final VisibilityType visibility;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private LocalDate startDate;
+    @OneToMany(mappedBy = "travelPlan", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<Day> days;
 
     public TravelPlan() {
-        this(0, 0, "", null, LocalDate.now(), LocalDate.now());
+        this(0, 0, "", null, LocalDate.now(), new ArrayList<>());
     }
 
-    public TravelPlan(long userId, long id, String name, VisibilityType visibility, LocalDate startDate, LocalDate endDate) {
+    public TravelPlan(long userId, long id, String name, VisibilityType visibility, LocalDate startDate, List<Day> days) {
         this.userId = userId;
         this.id = id;
         this.name = name;
         this.visibility = visibility;
         this.startDate = startDate;
-        this.endDate = endDate;
+        this.days = new ArrayList<>(days);
     }
 
-    public TravelPlan(long userId, long id, String name, VisibilityType visibility, List<? extends SingleDateObject> days) {
+    public TravelPlan(long userId, long id, String name, VisibilityType visibility, List<Day> days) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.visibility = visibility;
-        startDate = days.stream().findFirst().map(SingleDateObject::getDate).orElse(LocalDate.of(1970, 1, 1));
-        endDate = days.stream().findFirst().map(SingleDateObject::getDate).orElse(LocalDate.of(1970, 1, 1));
+        startDate = days.isEmpty() ? LocalDate.of(1970, 1, 1) : days.get(0).getDate();
+        this.days = new ArrayList<>(days);
     }
 
-    private List<Day> getDays(IntRange range) {
-        return null;
+    public List<Day> getDays() {
+        return days;
     }
 
     private void switchDays(int index1, int index2) {
@@ -71,7 +73,16 @@ public class TravelPlan implements Comparable<TravelPlan>{
     }
 
     public TravelPlan withName(String newName) {
-        return new TravelPlan(userId, id, newName, visibility, startDate, endDate);
+        return new TravelPlan(userId, id, newName, visibility, startDate, days);
+    }
+
+    public void setDays(List<Day> days) {
+        this.days = new ArrayList<>(days);
+        startDate = days.isEmpty() ? LocalDate.of(1970, 1, 1) : days.get(0).getDate();
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     @Override

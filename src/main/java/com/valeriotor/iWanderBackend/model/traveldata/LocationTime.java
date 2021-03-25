@@ -2,27 +2,30 @@ package com.valeriotor.iWanderBackend.model.traveldata;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDate;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalTime;
 @Entity
 public class LocationTime {
 
     @Id
     private final long locationTimeId;
-    private final long dayId;
     private final LocalTime timeStamp;
     private final double latitude;
     private final double longitude;
     private final String name;
     private final String nameId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "day_id")
+    private final Day day;
 
     public LocationTime() {
-        this(0, 0, null, 0, 0, "", "");
+        this(0, null, 0, 0, "", "", null);
     }
 
-    public LocationTime(long locationTimeId, long dayId, LocalTime timeStamp, double latitude, double longitude, String name, String nameId) {
+    public LocationTime(long locationTimeId, LocalTime timeStamp, double latitude, double longitude, String name, String nameId, Day day) {
         this.locationTimeId = locationTimeId;
-        this.dayId = dayId;
+        this.day = day;
         this.timeStamp = timeStamp;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -50,23 +53,23 @@ public class LocationTime {
         return nameId;
     }
 
-    public long getDayId() {
-        return dayId;
+    public Day getDay() {
+        return day;
     }
 
     public long getLocationTimeId() {
         return locationTimeId;
     }
 
-    public LocationTime withDayId(long dayId) {
-        return new LocationTime(locationTimeId, dayId, timeStamp, latitude, longitude, name, nameId);
+    public LocationTime withDayId() {
+        return new LocationTime(locationTimeId, timeStamp, latitude, longitude, name, nameId, day);
     }
 
     @Override
     public String toString() {
         return "LocationTime{" +
                 "locationTimeId=" + locationTimeId +
-                ", dayId=" + dayId +
+                ", date=" + day.getDate() +
                 ", timeStamp=" + timeStamp +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +

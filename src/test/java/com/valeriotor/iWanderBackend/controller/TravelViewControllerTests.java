@@ -37,6 +37,7 @@ public class TravelViewControllerTests {
 
     private void testGetLocationTimesForDay(long travelId) {
         List<LocationTime> locationTimesForDay = testController.getLocationTimesForDay(travelId,0, 0, 4);
+        locationTimesForDay.forEach(System.out::println);
         assert locationTimesForDay.size() == 1;
         assert locationTimesForDay.get(0).getName().equals("Pantheon");
     }
