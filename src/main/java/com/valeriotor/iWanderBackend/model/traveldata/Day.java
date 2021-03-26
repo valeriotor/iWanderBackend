@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 public class Day implements SingleDateObject, Comparable<Day>, Cloneable{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private final long id;
     private final LocalDate date;
     private final String cityId;
@@ -20,7 +20,7 @@ public class Day implements SingleDateObject, Comparable<Day>, Cloneable{
     @JoinColumn(name = "travel_plan_id")
     @JsonBackReference
     private final TravelPlan travelPlan;
-    @OneToMany(mappedBy = "day", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "day", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private List<LocationTime> locationTimes;
 

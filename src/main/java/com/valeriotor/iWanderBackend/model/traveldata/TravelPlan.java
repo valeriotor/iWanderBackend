@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 public class TravelPlan implements Comparable<TravelPlan>{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private final long id;
     private final long userId;
     private final String name;
@@ -20,7 +20,7 @@ public class TravelPlan implements Comparable<TravelPlan>{
     @Column(columnDefinition = "smallint")
     private final VisibilityType visibility;
     private LocalDate startDate;
-    @OneToMany(mappedBy = "travelPlan", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(mappedBy = "travelPlan", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     @JsonManagedReference
     private List<Day> days;
 

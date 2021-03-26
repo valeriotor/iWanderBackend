@@ -29,8 +29,8 @@ public class TravelPlanDataHandler {
     @Autowired
     private LocationTimeRepo locationTimeRepo;
 
-    public void addTravel(TravelDataContainer plan) {
-        planRepo.save(plan.getTravelPlan());
+    public void addTravel(TravelPlan plan) {
+        planRepo.save(plan).getId();
     }
 
     public boolean renameTravel(long travelId, String newName) {

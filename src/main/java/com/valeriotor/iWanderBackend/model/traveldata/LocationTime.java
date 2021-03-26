@@ -2,15 +2,13 @@ package com.valeriotor.iWanderBackend.model.traveldata;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalTime;
 @Entity
 public class LocationTime {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private final long locationTimeId;
     private final LocalTime timeStamp;
     private final double latitude;

@@ -6,7 +6,9 @@ import com.valeriotor.iWanderBackend.datahandler.TravelPlanDataHandler;
 import com.valeriotor.iWanderBackend.model.traveldata.*;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
@@ -50,6 +52,11 @@ public class TravelViewController {
     @RequestMapping("/deleteTravel")
     public void deleteTravel(long travelId) {
         travelPlanDataHandler.deleteTravel(travelId);
+    }
+
+    @RequestMapping("/addTravel")
+    public void addTravel(@RequestBody TravelPlan travelPlan) {
+        travelPlanDataHandler.addTravel(travelPlan);
     }
 
 
