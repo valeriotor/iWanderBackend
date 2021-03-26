@@ -1,5 +1,7 @@
 package com.valeriotor.iWanderBackend.model.traveldata;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.valeriotor.iWanderBackend.util.IntRange;
 
 import javax.persistence.*;
@@ -16,8 +18,10 @@ public class Day implements SingleDateObject, Comparable<Day>, Cloneable{
     private final String cityId;
     @ManyToOne(optional = false)
     @JoinColumn(name = "travel_plan_id")
+    @JsonBackReference
     private final TravelPlan travelPlan;
     @OneToMany(mappedBy = "day", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonManagedReference
     private List<LocationTime> locationTimes;
 
     public Day() {

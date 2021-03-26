@@ -1,5 +1,6 @@
 package com.valeriotor.iWanderBackend.model.traveldata;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.collect.ImmutableList;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
 import com.valeriotor.iWanderBackend.util.IntRange;
@@ -20,6 +21,7 @@ public class TravelPlan implements Comparable<TravelPlan>{
     private final VisibilityType visibility;
     private LocalDate startDate;
     @OneToMany(mappedBy = "travelPlan", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JsonManagedReference
     private List<Day> days;
 
     public TravelPlan() {

@@ -1,5 +1,7 @@
 package com.valeriotor.iWanderBackend.model.traveldata;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,6 +19,7 @@ public class LocationTime {
     private final String nameId;
     @ManyToOne(optional = false)
     @JoinColumn(name = "day_id")
+    @JsonBackReference
     private final Day day;
 
     public LocationTime() {
