@@ -1,6 +1,6 @@
 package com.valeriotor.iWanderBackend.datahandler.repos;
 
-import com.valeriotor.iWanderBackend.model.traveldata.Day;
+import com.valeriotor.iWanderBackend.model.core.Day;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

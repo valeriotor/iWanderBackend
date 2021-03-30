@@ -1,29 +1,26 @@
 package com.valeriotor.iWanderBackend.controller;
 
-import com.valeriotor.iWanderBackend.datahandler.ProfileDataHandler;
-import com.valeriotor.iWanderBackend.model.userdata.Profile;
-import com.valeriotor.iWanderBackend.model.userdata.Profile.ProfileRedux;
+import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
+import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class ProfileSearchController {
 
     @Autowired
-    private ProfileDataHandler profileDataHandler;
+    private ApplicationUserDao applicationUserDao;
 
     @RequestMapping("/findUser")
-    public List<ProfileRedux> getProfilesByPrefix(String prefix, int start, int end) {
-        List<ProfileRedux> profiles = profileDataHandler
-                .findUsersByPrefix(prefix, IntRange.of(start, end))
-                .stream()
-                .map(Profile::redux)
-                .collect(Collectors.toList());
-        return profiles;
+    public List<UserMinimumDTO> getProfilesByPrefix(String prefix, int start, int end) {
+        IntRange range = IntRange.of(start, end);
+        if(range == null) return new ArrayList<>();
+        List<UserMinimumDTO> users = applicationUserDao.findUsersByPrefix(prefix, range);
+        return users;
     }
 }

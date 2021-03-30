@@ -2,7 +2,7 @@ package com.valeriotor.iWanderBackend.auth;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
+import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,12 +21,6 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     public ApplicationUserDetailsService(PasswordEncoder passwordEncoder, @Qualifier("datahandler") ApplicationUserDao dao) {
         this.passwordEncoder = passwordEncoder;
         this.dao = dao;
-        dao.addUserDetails(Lists.newArrayList(
-                new ApplicationUserDetails("valeriotor", passwordEncoder.encode("password"), ImmutableList.of(), true, true, true, true),
-                new ApplicationUserDetails("alessandro", passwordEncoder.encode("password"), ImmutableList.of(), true, true, true, true),
-                new ApplicationUserDetails("cristianal", passwordEncoder.encode("password"), ImmutableList.of(), true, true, true, true)
-                )
-        );
     }
 
     @Override

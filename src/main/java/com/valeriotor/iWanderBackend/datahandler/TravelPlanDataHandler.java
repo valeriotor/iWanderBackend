@@ -5,7 +5,11 @@ import com.valeriotor.iWanderBackend.datahandler.repos.CityRepo;
 import com.valeriotor.iWanderBackend.datahandler.repos.DayRepo;
 import com.valeriotor.iWanderBackend.datahandler.repos.LocationTimeRepo;
 import com.valeriotor.iWanderBackend.datahandler.repos.TravelPlanRepo;
-import com.valeriotor.iWanderBackend.model.traveldata.*;
+import com.valeriotor.iWanderBackend.model.core.City;
+import com.valeriotor.iWanderBackend.model.core.Day;
+import com.valeriotor.iWanderBackend.model.core.LocationTime;
+import com.valeriotor.iWanderBackend.model.core.TravelPlan;
+import com.valeriotor.iWanderBackend.model.dto.TravelPlanMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,15 +37,8 @@ public class TravelPlanDataHandler {
         planRepo.save(plan).getId();
     }
 
-    public boolean renameTravel(long travelId, String newName) {
-        Optional<TravelPlan> firstPlanOptional = planRepo.findById(travelId);
-        if(firstPlanOptional.isPresent()) {
-            TravelPlan newPlan = firstPlanOptional.get().withName(newName);
-            planRepo.deleteById(travelId);
-            planRepo.save(newPlan);
-            return true;
-        }
-        return false;
+    public int renameTravel(long travelId, String newName) {
+        return planRepo.setNameForTravel(travelId, newName);
     }
 
     public void deleteTravel(long travelId) {
@@ -54,12 +51,11 @@ public class TravelPlanDataHandler {
         planRepo.save(updatedPlan);
     }
 
-    public List<TravelPlanRedux> getTravelsForUser(long userId, IntRange range) {
+    public List<TravelPlanMinimumDTO> getTravelsForUser(String username, IntRange range) {
         if(range == null) return ImmutableList.of();
-        List<TravelPlan> plans = planRepo.findAllByUserIdIn(ImmutableList.of(userId));
+        List<TravelPlanMinimumDTO> plans = planRepo.findAllByUser_usernameIn(ImmutableList.of(username));
         plans.sort(null);
-        List<TravelPlanRedux> sublist = range.getSublist(plans.stream().map(TravelPlanRedux::new).collect(Collectors.toList()));
-        return sublist;
+        return plans;
     }
 
     public Optional<TravelPlan> getTravel(long travelId) {

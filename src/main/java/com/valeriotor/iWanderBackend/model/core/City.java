@@ -1,4 +1,4 @@
-package com.valeriotor.iWanderBackend.model.traveldata;
+package com.valeriotor.iWanderBackend.model.core;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

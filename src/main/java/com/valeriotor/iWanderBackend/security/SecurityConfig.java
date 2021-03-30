@@ -29,11 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http    .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/**").permitAll()
+                //.antMatchers("/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin()
+                .httpBasic()
+                //.formLogin()
                 .and()
                 .headers().frameOptions().disable();
     }
