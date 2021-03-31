@@ -68,7 +68,6 @@ public class TravelViewControllerTests {
                 break;
             }
         }
-        System.out.println(valsFirstBerlinDayLocationTimes);
         assert valsBerlinDays.size() == 1;
         assert valsFirstBerlinDayLocationTimes.size() == 1;
         assert valsFirstBerlinDayLocationTimes.get(0).getName().equals("Brandenburg Gate");

@@ -87,7 +87,6 @@ public class TravelPlanDataHandler {
         if(days.size() <= dayIndex || dayIndex < 0)
             return new ArrayList<>();
         long dayId = days.get(dayIndex).getId();
-        System.out.println("AAAAAAAAAAAAAAAAAAAA" + dayId);
         List<LocationTime> locationTimes = locationTimeRepo.findAllByDay_Id(dayId);
         List<LocationTimeDTO> locationTimeDTOS = convertLocationTimesToDTOs(locationTimes);
         return locationTimeDTOS;
