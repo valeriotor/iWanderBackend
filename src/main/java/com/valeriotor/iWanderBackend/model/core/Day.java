@@ -89,7 +89,7 @@ public class Day implements Comparable<Day>, Cloneable{
     public String toString() {
         return "Day{" +
                 "id=" + id +
-                ",travelId=" + travelPlan.getId() +
+                ",travelId=" + (travelPlan == null ? "none" : travelPlan.getId()) +
                 ", date=" + date +
                 ", cityId='" + cityId + '\'' +
                 ", locationTimes=" + locationTimes +

@@ -114,4 +114,18 @@ public class ApplicationUserDetails implements UserDetails{
     public void setPlans(List<TravelPlan> plans) {
         this.plans = plans;
     }
+
+    @Override
+    public String toString() {
+        return "ApplicationUserDetails{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", authorities=" + authorities +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", enabled=" + enabled +
+                ", #plans=" + plans.size() +
+                '}';
+    }
 }

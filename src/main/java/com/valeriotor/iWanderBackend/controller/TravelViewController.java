@@ -6,6 +6,8 @@ import com.valeriotor.iWanderBackend.model.core.Day;
 import com.valeriotor.iWanderBackend.model.core.LocationTime;
 import com.valeriotor.iWanderBackend.model.core.TravelPlan;
 import com.valeriotor.iWanderBackend.model.dto.DayMinimumDTO;
+import com.valeriotor.iWanderBackend.model.dto.LocationTimeDTO;
+import com.valeriotor.iWanderBackend.model.dto.TravelPlanDTO;
 import com.valeriotor.iWanderBackend.model.dto.TravelPlanMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,8 @@ public class TravelViewController {
     @Autowired
     private TravelPlanDataHandler travelPlanDataHandler;
 
-    @RequestMapping("/getTravel")
+    @RequestMapping("/getTravels")
     public List<TravelPlanMinimumDTO> getTravelsByUserID(String username, int start, int end) {
-        //System.out.println(((ApplicationUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
         return travelPlanDataHandler.getTravelsForUser(username, IntRange.of(start, end));
     }
 
@@ -37,7 +38,7 @@ public class TravelViewController {
     }
 
     @RequestMapping("/getLocationTimes")
-    public List<LocationTime> getLocationTimesForDay(long travelId, int dayIndex, int start, int end) {
+    public List<LocationTimeDTO> getLocationTimesForDay(long travelId, int dayIndex, int start, int end) {
         IntRange range = IntRange.of(start, end);
         if(range == null) return ImmutableList.of();
         return travelPlanDataHandler.getLocationTimesForDayAtIndex(travelId, dayIndex);
@@ -54,7 +55,7 @@ public class TravelViewController {
     }
 
     @RequestMapping("/addTravel")
-    public void addTravel(@RequestBody TravelPlan travelPlan) {
+    public void addTravel(@RequestBody TravelPlanDTO travelPlan) {
         travelPlanDataHandler.addTravel(travelPlan);
     }
 

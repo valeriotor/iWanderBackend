@@ -21,6 +21,12 @@ import java.util.List;
 @Component
 public class TestDataCreator {
 
+    private static ApplicationUserDetails ADMIN;
+
+    public static ApplicationUserDetails getADMIN() {
+        return ADMIN;
+    }
+
     private final UserDetailsRepo userDetailsRepo;
     private final TravelPlanRepo travelPlanRepo;
     private final PasswordEncoder passwordEncoder;
@@ -81,6 +87,8 @@ public class TestDataCreator {
 
         userDetailsRepo.saveAll(Lists.newArrayList(valeriotor, alessandrotie, alessandrover, cristianalf, fabiocur));
         travelPlanRepo.saveAll(Lists.newArrayList(planRoma, planZurigo, planSanFrancisco, planParigi, planGenova, planCasablanca));
+
+        ADMIN = valeriotor;
     }
 
 }

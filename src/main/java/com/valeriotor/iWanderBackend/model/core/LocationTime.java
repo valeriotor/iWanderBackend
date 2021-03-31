@@ -18,7 +18,7 @@ public class LocationTime {
     @ManyToOne(optional = false)
     @JoinColumn(name = "day_id")
     @JsonBackReference
-    private final Day day;
+    private Day day;
 
     public LocationTime() {
         this(0, null, 0, 0, "", "", null);
@@ -84,6 +84,10 @@ public class LocationTime {
 
     public Day getDay() {
         return day;
+    }
+
+    public void setDay(Day day) {
+        this.day = day;
     }
 
     @Override
