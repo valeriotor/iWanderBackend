@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +15,11 @@ public class ApplicationUserDetails implements UserDetails{
     @Id
     private String username;
     private String password;
+    private String name;
+    private String surname;
+    private LocalDate birthDate;
+    private String bio;
+    private String imageURL;
     //private final Collection<? extends GrantedAuthority> authorities;
     @Transient private final Collection<? extends GrantedAuthority> authorities = ImmutableList.of();
     private boolean accountNonExpired;
@@ -113,6 +119,38 @@ public class ApplicationUserDetails implements UserDetails{
 
     public void setPlans(List<TravelPlan> plans) {
         this.plans = plans;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     @Override
