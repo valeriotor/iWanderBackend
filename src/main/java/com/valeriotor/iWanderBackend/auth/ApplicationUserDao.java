@@ -1,6 +1,7 @@
 package com.valeriotor.iWanderBackend.auth;
 
 import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
+import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
 
@@ -19,5 +20,7 @@ public interface ApplicationUserDao {
     List<UserMinimumDTO> findUsersByPrefix(String prefix, IntRange range);
 
     long getUserCount();
+
+    boolean createUserProfile(UserFrontDTO userFrontDTO);
 
 }

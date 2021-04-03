@@ -1,6 +1,5 @@
 package com.valeriotor.iWanderBackend.model.core;
 
-import com.google.common.collect.ImmutableList;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,7 +20,7 @@ public class ApplicationUserDetails implements UserDetails{
     private String bio;
     private String imageURL;
     //private final Collection<? extends GrantedAuthority> authorities;
-    @Transient private final Collection<? extends GrantedAuthority> authorities = ImmutableList.of();
+    @Transient private final Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
@@ -30,11 +29,11 @@ public class ApplicationUserDetails implements UserDetails{
     private List<TravelPlan> plans;
 
     public ApplicationUserDetails() {
-        this("", "", ImmutableList.of(), true, true, true, true);
+        this("", "", new ArrayList<>(), true, true, true, true);
     }
 
     public ApplicationUserDetails(String username, String password) {
-        this(username, password, ImmutableList.of(), true, true, true, true);
+        this(username, password, new ArrayList<>(), true, true, true, true);
     }
 
     public ApplicationUserDetails(String username,
