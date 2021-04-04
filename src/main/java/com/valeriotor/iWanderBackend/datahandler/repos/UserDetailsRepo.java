@@ -21,5 +21,8 @@ public interface UserDetailsRepo extends JpaRepository<ApplicationUserDetails, S
     @Query("update ApplicationUserDetails details set details.surname = :surname where details.username = :username")
     int setSurnameForUser(@Param("username") String username, @Param("surname") String surname);
 
+    @Modifying
+    @Query("update ApplicationUserDetails details set details.imageURL = :imageURL where details.username = :username")
+    int setImageUrlForUser(@Param("username") String username, @Param("imageURL") String imageURL);
 
 }

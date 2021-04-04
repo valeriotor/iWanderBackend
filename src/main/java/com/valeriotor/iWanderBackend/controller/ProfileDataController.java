@@ -4,10 +4,10 @@ import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
 import com.valeriotor.iWanderBackend.datahandler.ProfileDataHandler;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/profile")
@@ -36,6 +36,11 @@ public class ProfileDataController {
     public ErrorResponse createProfile(@RequestBody UserFrontDTO userFrontDTO) {
         boolean success = applicationUserDao.createUserProfile(userFrontDTO);
         return success ? null : new ErrorResponse(Error.USERNAME_ALREADY_TAKEN);
+    }
+
+    @PutMapping("/setProfileImage")
+    public void setProfileImage(@RequestParam MultipartFile image) throws IOException {
+        applicationUserDao.setUserProfileImage(image.getBytes());
     }
 
 }

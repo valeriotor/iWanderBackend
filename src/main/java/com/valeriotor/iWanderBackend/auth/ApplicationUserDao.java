@@ -23,4 +23,6 @@ public interface ApplicationUserDao {
 
     boolean createUserProfile(UserFrontDTO userFrontDTO);
 
+    boolean setUserProfileImage(byte[] bytes);
+
 }
