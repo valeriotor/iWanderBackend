@@ -1,7 +1,7 @@
 package com.valeriotor.iWanderBackend.datahandler.images;
 
 import com.valeriotor.iWanderBackend.datahandler.images.repos.ImageRepo;
-import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
+import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.core.ImageEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,7 +20,7 @@ public class ImageLocationRepoHandler implements ImageLocationDAO {
     }
 
     @Override
-    public String saveImageAndGetURL(byte[] bytes, ApplicationUserDetails userDetails) {
+    public String saveImageAndGetURL(byte[] bytes, AppUser userDetails) {
         String path = "/file/image/" + userDetails.getUsername() + "/" + LocalTime.now().toString();
         String oldUrl = userDetails.getImageURL();
         if(oldUrl != null) {

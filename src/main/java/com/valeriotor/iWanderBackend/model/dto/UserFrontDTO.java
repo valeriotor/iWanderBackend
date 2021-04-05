@@ -1,21 +1,22 @@
 package com.valeriotor.iWanderBackend.model.dto;
 
-import java.time.LocalDate;
+import com.valeriotor.iWanderBackend.model.core.AppUser;
 
 public class UserFrontDTO {
     private String username;
-    private String password;
     private String name;
     private String surname;
-    private LocalDate birthDate;
+    private String imageURL;
 
+    public UserFrontDTO(String username, String name, String surname, String imageURL) {
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.imageURL = imageURL;
+    }
 
-    public UserFrontDTO() {
-        this.username = "";
-        this.password = "";
-        this.name = "";
-        this.surname = "";
-        this.birthDate = null;
+    public UserFrontDTO(AppUser user) {
+        this(user.getUsername(), user.getName(), user.getSurname(), user.getImageURL());
     }
 
     public String getUsername() {
@@ -24,14 +25,6 @@ public class UserFrontDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -50,11 +43,11 @@ public class UserFrontDTO {
         this.surname = surname;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

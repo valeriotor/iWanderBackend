@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class ApplicationUserDetails implements UserDetails{
+public class AppUser implements UserDetails{
     @Id
     private String username;
     private String password;
@@ -27,22 +27,30 @@ public class ApplicationUserDetails implements UserDetails{
     private boolean enabled;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TravelPlan> plans;
+    @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Following> followers; // Users who follow this user
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Following> followees;// Users this user follows
+    @OneToMany(mappedBy = "target", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FollowingRequest> askers; // Users who asked this user
+    @OneToMany(mappedBy = "asker", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FollowingRequest> targets;// Users this user asked to
 
-    public ApplicationUserDetails() {
+    public AppUser() {
         this("", "", new ArrayList<>(), true, true, true, true);
     }
 
-    public ApplicationUserDetails(String username, String password) {
+    public AppUser(String username, String password) {
         this(username, password, new ArrayList<>(), true, true, true, true);
     }
 
-    public ApplicationUserDetails(String username,
-                                  String password,
-                                  Collection<? extends GrantedAuthority> authorities,
-                                  boolean accountNonExpired,
-                                  boolean accountNonLocked,
-                                  boolean credentialsNonExpired,
-                                  boolean enabled) {
+    public AppUser(String username,
+                   String password,
+                   Collection<? extends GrantedAuthority> authorities,
+                   boolean accountNonExpired,
+                   boolean accountNonLocked,
+                   boolean credentialsNonExpired,
+                   boolean enabled) {
         this.username = username;
         this.password = password;
         //this.authorities = authorities;
@@ -51,6 +59,10 @@ public class ApplicationUserDetails implements UserDetails{
         this.credentialsNonExpired = credentialsNonExpired;
         this.enabled = enabled;
         plans = new ArrayList<>();
+        followers = new ArrayList<>();
+        followees = new ArrayList<>();
+        askers = new ArrayList<>();
+        targets = new ArrayList<>();
     }
 
     @Override
@@ -152,9 +164,41 @@ public class ApplicationUserDetails implements UserDetails{
         this.bio = bio;
     }
 
+    public List<Following> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<Following> followers) {
+        this.followers = followers;
+    }
+
+    public List<Following> getFollowees() {
+        return followees;
+    }
+
+    public void setFollowees(List<Following> followees) {
+        this.followees = followees;
+    }
+
+    public List<FollowingRequest> getAskers() {
+        return askers;
+    }
+
+    public void setAskers(List<FollowingRequest> askers) {
+        this.askers = askers;
+    }
+
+    public List<FollowingRequest> getTargets() {
+        return targets;
+    }
+
+    public void setTargets(List<FollowingRequest> targets) {
+        this.targets = targets;
+    }
+
     @Override
     public String toString() {
-        return "ApplicationUserDetails{" +
+        return "AppUser{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", authorities=" + authorities +

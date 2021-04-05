@@ -15,7 +15,7 @@ public class TravelPlan implements Comparable<TravelPlan>{
     private long id;
     @ManyToOne(optional = false)
     @JoinColumn(name = "username")
-    private ApplicationUserDetails user;
+    private AppUser user;
     private String name;
     @Enumerated
     @Column(columnDefinition = "smallint")
@@ -29,7 +29,7 @@ public class TravelPlan implements Comparable<TravelPlan>{
         this(null, 0, "", null, LocalDate.now(), new ArrayList<>());
     }
 
-    public TravelPlan(ApplicationUserDetails user, long id, String name, VisibilityType visibility, LocalDate startDate, List<Day> days) {
+    public TravelPlan(AppUser user, long id, String name, VisibilityType visibility, LocalDate startDate, List<Day> days) {
         this.user = user;
         this.id = id;
         this.name = name;
@@ -38,7 +38,7 @@ public class TravelPlan implements Comparable<TravelPlan>{
         this.days = new ArrayList<>(days);
     }
 
-    public TravelPlan(ApplicationUserDetails user, long id, String name, VisibilityType visibility, List<Day> days) {
+    public TravelPlan(AppUser user, long id, String name, VisibilityType visibility, List<Day> days) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -55,11 +55,11 @@ public class TravelPlan implements Comparable<TravelPlan>{
         this.id = id;
     }
 
-    public ApplicationUserDetails getUser() {
+    public AppUser getUser() {
         return user;
     }
 
-    public void setUser(ApplicationUserDetails user) {
+    public void setUser(AppUser user) {
         this.user = user;
     }
 

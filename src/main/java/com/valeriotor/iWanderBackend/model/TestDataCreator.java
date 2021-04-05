@@ -3,7 +3,7 @@ package com.valeriotor.iWanderBackend.model;
 import com.google.common.collect.Lists;
 import com.valeriotor.iWanderBackend.datahandler.repos.TravelPlanRepo;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
-import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
+import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.core.Day;
 import com.valeriotor.iWanderBackend.model.core.LocationTime;
 import com.valeriotor.iWanderBackend.model.core.TravelPlan;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.xml.stream.Location;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -21,9 +20,9 @@ import java.util.List;
 @Component
 public class TestDataCreator {
 
-    private static ApplicationUserDetails ADMIN;
+    private static AppUser ADMIN;
 
-    public static ApplicationUserDetails getADMIN() {
+    public static AppUser getADMIN() {
         return ADMIN;
     }
 
@@ -41,12 +40,22 @@ public class TestDataCreator {
     @PostConstruct
     public void init() {
 
-        var valeriotor = new ApplicationUserDetails("valeriotor", passwordEncoder.encode("password"));
-        var alessandrotie = new ApplicationUserDetails("alessandrotie", passwordEncoder.encode("password"));
-        var alessandrover = new ApplicationUserDetails("alessandrover", passwordEncoder.encode("password"));
-        var cristianalf = new ApplicationUserDetails("cristianalf", passwordEncoder.encode("password"));
-        var fabiocur = new ApplicationUserDetails("fabiocur", passwordEncoder.encode("password"));
+        var valeriotor = new AppUser("valeriotor", passwordEncoder.encode("password"));
+        var alessandrotie = new AppUser("alessandrotie", passwordEncoder.encode("password"));
+        var alessandrover = new AppUser("alessandrover", passwordEncoder.encode("password"));
+        var cristianalf = new AppUser("cristianalf", passwordEncoder.encode("password"));
+        var fabiocur = new AppUser("fabiocur", passwordEncoder.encode("password"));
 
+        valeriotor.setName("Valerio");
+        valeriotor.setSurname("Torsiello");
+        alessandrotie.setName("Alessandro");
+        alessandrotie.setSurname("Tierno");
+        alessandrover.setName("Alessandro");
+        alessandrover.setSurname("Verosimile");
+        cristianalf.setName("Cristian");
+        cristianalf.setSurname("Alfano");
+        fabiocur.setName("Fabio");
+        fabiocur.setSurname("Curci");
 
         List<Day> daysRoma = new ArrayList<>();
         List<Day> daysZurigo = new ArrayList<>();

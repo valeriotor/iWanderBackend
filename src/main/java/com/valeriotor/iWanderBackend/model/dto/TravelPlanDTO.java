@@ -2,8 +2,6 @@ package com.valeriotor.iWanderBackend.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
-import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
-import com.valeriotor.iWanderBackend.model.core.Day;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -2,10 +2,7 @@ package com.valeriotor.iWanderBackend.controller;
 
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
-import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
-import com.valeriotor.iWanderBackend.model.core.Day;
 import com.valeriotor.iWanderBackend.model.dto.*;
-import com.valeriotor.iWanderBackend.model.core.LocationTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

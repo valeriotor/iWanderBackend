@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 @Transactional
 public class TravelPlanDataHandler {
     @Autowired
@@ -40,8 +41,8 @@ public class TravelPlanDataHandler {
     public void addTravel(TravelPlanDTO planDTO) {
         TravelPlan travelPlan = mapper.map(planDTO, TravelPlan.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication != null && authentication.getPrincipal() instanceof ApplicationUserDetails) {
-            travelPlan.setUser((ApplicationUserDetails)authentication.getPrincipal());
+        if(authentication != null && authentication.getPrincipal() instanceof AppUser) {
+            travelPlan.setUser((AppUser)authentication.getPrincipal());
         } else {
             travelPlan.setUser(TestDataCreator.getADMIN());
         }

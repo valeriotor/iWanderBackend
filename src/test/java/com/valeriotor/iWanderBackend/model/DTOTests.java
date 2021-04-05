@@ -1,23 +1,5 @@
 package com.valeriotor.iWanderBackend.model;
 
-import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
-import com.valeriotor.iWanderBackend.model.core.Day;
-import com.valeriotor.iWanderBackend.model.core.TravelPlan;
-import com.valeriotor.iWanderBackend.model.dto.DayDTO;
-import com.valeriotor.iWanderBackend.model.dto.LocationTimeDTO;
-import com.valeriotor.iWanderBackend.model.dto.TravelPlanDTO;
-import org.assertj.core.util.Lists;
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class DTOTests {
 /*
     private DozerBeanMapper mapper;

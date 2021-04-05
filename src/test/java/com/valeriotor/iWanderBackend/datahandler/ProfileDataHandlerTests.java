@@ -1,7 +1,7 @@
 package com.valeriotor.iWanderBackend.datahandler;
 
 import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
-import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
+import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class ProfileDataHandlerTests {
     @Test
     public void testSourceSizeAndAdd() {
         assert applicationUserDao.getUserCount() == 5;
-        ApplicationUserDetails user = new ApplicationUserDetails();
+        AppUser user = new AppUser();
         user.setUsername("Giuseppide");
         applicationUserDao.addUserDetails(user);
         Optional<UserMinimumDTO> giuseppide = applicationUserDao.findUsersByPrefix("g", IntRange.of(0, 10)).stream().findFirst();

@@ -3,9 +3,9 @@ package com.valeriotor.iWanderBackend.datahandler;
 import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
 import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationRepoHandler;
 import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationDAO;
-import com.valeriotor.iWanderBackend.model.core.ApplicationUserDetails;
+import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
-import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
+import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.dozer.Mapper;
@@ -35,17 +35,17 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
     }
 
     @Override
-    public Optional<ApplicationUserDetails> findUserDetailsByUsername(String username) {
+    public Optional<AppUser> findUserDetailsByUsername(String username) {
         return userDetailsRepo.findById(username);
     }
 
     @Override
-    public void addUserDetails(ApplicationUserDetails userDetails) {
+    public void addUserDetails(AppUser userDetails) {
         userDetailsRepo.save(userDetails);
     }
 
     @Override
-    public void addUserDetails(List<ApplicationUserDetails> userDetailsList) {
+    public void addUserDetails(List<AppUser> userDetailsList) {
         userDetailsRepo.saveAll(userDetailsList);
     }
 
@@ -60,8 +60,8 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
     }
 
     @Override
-    public boolean createUserProfile(UserFrontDTO userFrontDTO) {
-        ApplicationUserDetails userDetails = mapper.map(userFrontDTO, ApplicationUserDetails.class);
+    public boolean createUserProfile(UserCreationDTO userCreationDTO) {
+        AppUser userDetails = mapper.map(userCreationDTO, AppUser.class);
         userDetails.setPassword(passwordEncoder.encode(userDetails.getPassword()));
         if(userDetailsRepo.existsById(userDetails.getUsername()))
             return false;
@@ -72,8 +72,8 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
     @Override
     @Transactional
     public boolean setUserProfileImage(byte[] bytes) {
-        ApplicationUserDetails user = AuthUtil.getPrincipal();
-        ApplicationUserDetails updatedUser = userDetailsRepo.findById(user.getUsername()).orElse(user);
+        AppUser user = AuthUtil.getPrincipal();
+        AppUser updatedUser = userDetailsRepo.findById(user.getUsername()).orElse(user);
         String imageUrl = imageLocationDAO.saveImageAndGetURL(bytes, updatedUser);
         userDetailsRepo.setImageUrlForUser(updatedUser.getUsername(), imageUrl);
         userDetailsRepo.flush();
