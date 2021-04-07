@@ -33,6 +33,16 @@ public class FollowingDataHandler {
         this.followingRequestRepo = followingRequestRepo;
     }
 
+    public List<UserFrontDTO> viewFollowers() { // TODO ADD PAGINATION
+        AppUser user = AuthUtil.getPrincipal();
+        List<Following> followingRequests = followingRepo.findByFollowee_Username(user.getUsername());
+        List<UserFrontDTO> followers = new ArrayList<>();
+        for(Following f : followingRequests) {
+            followers.add(new UserFrontDTO(f.getFollower()));
+        }
+        return followers;
+    }
+
     public boolean askToFollow(String targetName) { // TODO add 'public' profiles that don't need confirmation
         Optional<AppUser> targetOptional = userDetailsRepo.findById(targetName);
         if(targetOptional.isEmpty())
