@@ -8,6 +8,7 @@ import com.valeriotor.iWanderBackend.model.core.Following;
 import com.valeriotor.iWanderBackend.model.core.FollowingRequest;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,11 +34,11 @@ public class FollowingDataHandler {
         this.followingRequestRepo = followingRequestRepo;
     }
 
-    public List<UserFrontDTO> viewFollowers() { // TODO ADD PAGINATION
+    public List<UserFrontDTO> viewFollowers(Pageable pageable) {
         AppUser user = AuthUtil.getPrincipal();
-        List<Following> followingRequests = followingRepo.findByFollowee_Username(user.getUsername());
+        List<Following> followings = followingRepo.findByFollowee_Username(user.getUsername(), pageable);
         List<UserFrontDTO> followers = new ArrayList<>();
-        for(Following f : followingRequests) {
+        for(Following f : followings) {
             followers.add(new UserFrontDTO(f.getFollower()));
         }
         return followers;
@@ -61,9 +62,9 @@ public class FollowingDataHandler {
         return true;
     }
 
-    public List<UserFrontDTO> viewFollowRequests() { // TODO ADD PAGINATION
+    public List<UserFrontDTO> viewFollowRequests(Pageable pageable) {
         AppUser user = AuthUtil.getPrincipal();
-        List<FollowingRequest> followingRequests = followingRequestRepo.findByTarget_Username(user.getUsername());
+        List<FollowingRequest> followingRequests = followingRequestRepo.findByTarget_Username(user.getUsername(), pageable);
         List<UserFrontDTO> askers = new ArrayList<>();
         for(FollowingRequest f : followingRequests) {
             askers.add(new UserFrontDTO(f.getAsker()));

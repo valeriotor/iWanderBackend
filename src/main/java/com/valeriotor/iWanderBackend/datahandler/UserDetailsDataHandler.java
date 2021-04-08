@@ -11,6 +11,8 @@ import com.valeriotor.iWanderBackend.util.IntRange;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -50,8 +52,8 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
     }
 
     @Override
-    public List<UserMinimumDTO> findUsersByPrefix(String prefix, IntRange range) {
-        return range.getSublist(userDetailsRepo.findByUsernameStartingWithIgnoreCase(prefix));
+    public Slice<UserMinimumDTO> findUsersByPrefix(String prefix, Pageable pageable) {
+        return userDetailsRepo.findByUsernameStartingWithIgnoreCase(prefix, pageable);
     }
 
     @Override

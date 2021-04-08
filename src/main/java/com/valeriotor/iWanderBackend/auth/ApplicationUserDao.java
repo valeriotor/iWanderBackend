@@ -4,6 +4,8 @@ import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +19,7 @@ public interface ApplicationUserDao {
 
     void addUserDetails(List<AppUser> userDetailsList);
 
-    List<UserMinimumDTO> findUsersByPrefix(String prefix, IntRange range);
+    Slice<UserMinimumDTO> findUsersByPrefix(String prefix, Pageable pageable);
 
     long getUserCount();
 

@@ -6,6 +6,8 @@ import com.valeriotor.iWanderBackend.model.dto.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,7 +24,7 @@ public class TravelViewControllerTests {
 
     @Test
     public void testGetTravelsByUserID() {
-        List<TravelPlanMinimumDTO> travelPlanMinimumDTOS = travelViewController.getTravelsByUserID("valeriotor", 0, 4);
+        List<TravelPlanMinimumDTO> travelPlanMinimumDTOS = travelViewController.getTravelsByUserID("valeriotor", PageRequest.of(0, 4, Sort.by("startDate")));
         assert travelPlanMinimumDTOS.size() == 3;
         assert travelPlanMinimumDTOS.get(2).getStartDate().equals(LocalDate.of(2021, 10, 1));
         long id = travelPlanMinimumDTOS.get(0).getId();
@@ -30,13 +32,13 @@ public class TravelViewControllerTests {
     }
 
     private void testGetDaysForTravel(long travelId) {
-        List<DayMinimumDTO> dayReduxes = travelViewController.getDaysForTravel(travelId, 0, 4);
+        List<DayMinimumDTO> dayReduxes = travelViewController.getDaysForTravel(travelId, PageRequest.of(0, 4, Sort.by("date")));
         assert dayReduxes.get(0).getDate().equals(LocalDate.of(2021, 9, 1));
         testGetLocationTimesForDay(travelId);
     }
 
     private void testGetLocationTimesForDay(long travelId) {
-        List<LocationTimeDTO> locationTimesForDay = travelViewController.getLocationTimesForDay(travelId,0, 0, 4);
+        List<LocationTimeDTO> locationTimesForDay = travelViewController.getLocationTimesForDay(travelId,0, PageRequest.of(0, 4, Sort.by("timeStamp")));
         assert locationTimesForDay.size() == 1;
         assert locationTimesForDay.get(0).getName().equals("Pantheon");
     }
@@ -54,14 +56,14 @@ public class TravelViewControllerTests {
         locationTimes.add(locationTimeDTO);
         travelViewController.addTravel(planDTO);
         long id = 0;
-        List<TravelPlanMinimumDTO> valsTravels = travelViewController.getTravelsByUserID("valeriotor", 0, 10);
+        List<TravelPlanMinimumDTO> valsTravels = travelViewController.getTravelsByUserID("valeriotor", PageRequest.of(0, 10));
         List<DayMinimumDTO> valsBerlinDays = null;
         List<LocationTimeDTO> valsFirstBerlinDayLocationTimes = null;
         for(TravelPlanMinimumDTO planMinimumDTO : valsTravels) {
             if(planMinimumDTO.getName().equals("Berlin")) {
                 id = planMinimumDTO.getId();
-                valsBerlinDays = travelViewController.getDaysForTravel(id, 0, 10);
-                valsFirstBerlinDayLocationTimes = travelViewController.getLocationTimesForDay(id, 0, 0, 10);
+                valsBerlinDays = travelViewController.getDaysForTravel(id, PageRequest.of(0, 10));
+                valsFirstBerlinDayLocationTimes = travelViewController.getLocationTimesForDay(id, 0, PageRequest.of(0, 10, Sort.by("timeStamp")));
                 break;
             }
         }

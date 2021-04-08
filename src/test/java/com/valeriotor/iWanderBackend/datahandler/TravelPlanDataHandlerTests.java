@@ -10,6 +10,8 @@ import com.valeriotor.iWanderBackend.util.IntRange;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class TravelPlanDataHandlerTests {
 
     @Test
     public void testGetTravelsByUser() {
-        List<TravelPlanMinimumDTO> plansBy0 = dataHandler.getTravelsForUser("valeriotor", IntRange.of(0, 4));
+        List<TravelPlanMinimumDTO> plansBy0 = dataHandler.getTravelsForUser("valeriotor", PageRequest.of(0, 4));
         assert plansBy0.size() == 3;
     }
 
@@ -61,7 +63,7 @@ public class TravelPlanDataHandlerTests {
     }
 
     private TravelPlanMinimumDTO getFirstTravelRedux(TravelPlanDataHandler dataHandler) {
-        List<TravelPlanMinimumDTO> plansByMinus5 = dataHandler.getTravelsForUser("valeriotor", IntRange.of(0, 4));
+        List<TravelPlanMinimumDTO> plansByMinus5 = dataHandler.getTravelsForUser("valeriotor", PageRequest.of(0, 4, Sort.by("startDate")));
         return plansByMinus5.get(0);
     }
 

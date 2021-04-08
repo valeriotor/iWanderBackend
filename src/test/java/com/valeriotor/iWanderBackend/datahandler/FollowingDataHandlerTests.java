@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class FollowingDataHandlerTests {
     @Order(1)
     @WithUserDetails("alessandrotie")
     public void testFollowRequestReceived() {
-        List<UserFrontDTO> followRequests = followingDataHandler.viewFollowRequests();
+        List<UserFrontDTO> followRequests = followingDataHandler.viewFollowRequests(null);
         assert followRequests.size() == 1;
         assert followRequests.get(0).getUsername().equals("valeriotor");
     }
@@ -44,8 +43,8 @@ public class FollowingDataHandlerTests {
     @WithUserDetails("alessandrotie")
     public void testConfirmFollowRequest() {
         followingDataHandler.decideFollowingRequest("valeriotor", FollowingDataHandler.FollowingRequestDecideAction.CONFIRM);
-        assert followingDataHandler.viewFollowRequests().isEmpty();
-        List<UserFrontDTO> followers = followingDataHandler.viewFollowers();
+        assert followingDataHandler.viewFollowRequests(null).isEmpty();
+        List<UserFrontDTO> followers = followingDataHandler.viewFollowers(null);
         assert followers.size() == 1;
         assert followers.get(0).getUsername().equals("valeriotor");
 

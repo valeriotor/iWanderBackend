@@ -3,6 +3,7 @@ package com.valeriotor.iWanderBackend.controller;
 import com.valeriotor.iWanderBackend.datahandler.FollowingDataHandler;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +30,8 @@ public class FollowController {
     }
 
     @GetMapping("/viewRequests")
-    public List<UserFrontDTO> viewRequests(int start, int end) { // TODO add pagination
-        return followingDataHandler.viewFollowRequests();
+    public List<UserFrontDTO> viewRequests(Pageable pageable) { // TODO add pagination
+        return followingDataHandler.viewFollowRequests(pageable);
     }
 
     @PostMapping("/confirmRequest")

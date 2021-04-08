@@ -11,6 +11,7 @@ import com.valeriotor.iWanderBackend.model.dto.TravelPlanDTO;
 import com.valeriotor.iWanderBackend.model.dto.TravelPlanMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,23 +26,19 @@ public class TravelViewController {
     private TravelPlanDataHandler travelPlanDataHandler;
 
     @RequestMapping("/getTravels")
-    public List<TravelPlanMinimumDTO> getTravelsByUserID(String username, int start, int end) {
-        return travelPlanDataHandler.getTravelsForUser(username, IntRange.of(start, end));
+    public List<TravelPlanMinimumDTO> getTravelsByUserID(String username, Pageable pageable) {
+        return travelPlanDataHandler.getTravelsForUser(username, pageable);
     }
 
     @RequestMapping("/getDays")
-    public List<DayMinimumDTO> getDaysForTravel(long travelId, int start, int end) {
-        IntRange range = IntRange.of(start, end);
-        if(range == null) return ImmutableList.of();
-        List<Day> days = range.getSublist(travelPlanDataHandler.getDaysByTravelId(travelId));
+    public List<DayMinimumDTO> getDaysForTravel(long travelId, Pageable pageable) {
+        List<Day> days = travelPlanDataHandler.getDaysByTravelId(travelId, pageable);
         return days.stream().map(DayMinimumDTO::new).collect(Collectors.toList());
     }
 
     @RequestMapping("/getLocationTimes")
-    public List<LocationTimeDTO> getLocationTimesForDay(long travelId, int dayIndex, int start, int end) {
-        IntRange range = IntRange.of(start, end);
-        if(range == null) return ImmutableList.of();
-        return travelPlanDataHandler.getLocationTimesForDayAtIndex(travelId, dayIndex);
+    public List<LocationTimeDTO> getLocationTimesForDay(long travelId, int dayIndex, Pageable pageable) {
+        return travelPlanDataHandler.getLocationTimesForDayAtIndex(travelId, dayIndex, pageable);
     }
 
     @RequestMapping("/renameTravel")

@@ -13,6 +13,9 @@ import com.valeriotor.iWanderBackend.model.dto.TravelPlanMinimumDTO;
 import com.valeriotor.iWanderBackend.util.IntRange;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -63,10 +66,8 @@ public class TravelPlanDataHandler {
         planRepo.save(updatedPlan);
     }
 
-    public List<TravelPlanMinimumDTO> getTravelsForUser(String username, IntRange range) {
-        if(range == null) return ImmutableList.of();
-        List<TravelPlanMinimumDTO> plans = planRepo.findAllByUser_usernameIn(ImmutableList.of(username));
-        plans.sort(null);
+    public List<TravelPlanMinimumDTO> getTravelsForUser(String username, Pageable pageable) {
+        List<TravelPlanMinimumDTO> plans = planRepo.findAllByUser_usernameIn(ImmutableList.of(username), pageable);
         return plans;
     }
 
@@ -76,25 +77,23 @@ public class TravelPlanDataHandler {
         return byId;
     }
 
-    public List<Day> getDaysByTravelId(long travelId) {
-        List<Day> days = planRepo.findById(travelId).map(TravelPlan::getDays).orElse(new ArrayList<>());
-        days.sort(null);
+    public List<Day> getDaysByTravelId(long travelId, Pageable pageable) {
+        List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, pageable);
         return days;
     }
 
-    public List<LocationTimeDTO> getLocationTimesForDayAtIndex(long travelId, int dayIndex) {
-        List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId);
-        days.sort(null);
+    public List<LocationTimeDTO> getLocationTimesForDayAtIndex(long travelId, int dayIndex, Pageable pageable) {
+        List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("date")));
         if(days.size() <= dayIndex || dayIndex < 0)
             return new ArrayList<>();
         long dayId = days.get(dayIndex).getId();
-        List<LocationTime> locationTimes = locationTimeRepo.findAllByDay_Id(dayId);
+        List<LocationTime> locationTimes = locationTimeRepo.findAllByDay_Id(dayId, pageable);
         List<LocationTimeDTO> locationTimeDTOS = convertLocationTimesToDTOs(locationTimes);
         return locationTimeDTOS;
     }
 
-    public List<LocationTimeDTO> getLocationTimesByDayId(long dayId) {
-        List<LocationTime> locationTimes = locationTimeRepo.findAllByDay_Id(dayId);
+    public List<LocationTimeDTO> getLocationTimesByDayId(long dayId, Pageable pageable) {
+        List<LocationTime> locationTimes = locationTimeRepo.findAllByDay_Id(dayId, pageable);
         List<LocationTimeDTO> locationTimeDTOS = convertLocationTimesToDTOs(locationTimes);
         return locationTimeDTOS;
     }
