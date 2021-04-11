@@ -47,7 +47,7 @@ public class TravelViewControllerTests {
     public void testAddTravel() {
         List<DayDTO> days = new ArrayList<>();
         List<LocationTimeDTO> locationTimes = new ArrayList<>();
-        TravelPlanDTO planDTO = new TravelPlanDTO("Berlin", VisibilityType.PUBLIC, LocalDate.now(), days);
+        TravelPlanDTO planDTO = new TravelPlanDTO(0, "Berlin", VisibilityType.PUBLIC, LocalDate.now(), days);
 
         DayDTO dayDTO = new DayDTO(LocalDate.now(), "dummy", planDTO, locationTimes);
         days.add(dayDTO);

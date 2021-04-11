@@ -6,6 +6,7 @@ import com.valeriotor.iWanderBackend.model.core.LocationTime;
 import com.valeriotor.iWanderBackend.model.core.TravelPlan;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DayDTO {
@@ -17,6 +18,7 @@ public class DayDTO {
     private List<LocationTimeDTO> locationTimes;
 
     public DayDTO() {
+        locationTimes = new ArrayList<>();
     }
 
     public DayDTO(LocalDate date, String cityId, TravelPlanDTO travelPlan, List<LocationTimeDTO> locationTimes) {

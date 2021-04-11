@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TravelPlanDTO {
+    private long id;
     private String name;
     private VisibilityType visibility;
     private LocalDate startDate;
@@ -14,9 +16,11 @@ public class TravelPlanDTO {
     private List<DayDTO> days;
 
     public TravelPlanDTO() {
+        days = new ArrayList<>();
     }
 
-    public TravelPlanDTO(String name, VisibilityType visibility, LocalDate startDate, List<DayDTO> days) {
+    public TravelPlanDTO(long id, String name, VisibilityType visibility, LocalDate startDate, List<DayDTO> days) {
+        this.id = id;
         this.name = name;
         this.visibility = visibility;
         this.startDate = startDate;
@@ -53,5 +57,13 @@ public class TravelPlanDTO {
 
     public void setDays(List<DayDTO> days) {
         this.days = days;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -43,27 +43,42 @@ public class TravelPlanDataHandler {
 
     public void addTravel(TravelPlanDTO planDTO) {
         TravelPlan travelPlan = mapper.map(planDTO, TravelPlan.class);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication != null && authentication.getPrincipal() instanceof AppUser) {
-            travelPlan.setUser((AppUser)authentication.getPrincipal());
-        } else {
-            travelPlan.setUser(TestDataCreator.getADMIN());
-        }
+        travelPlan.setId(0);
+        travelPlan.setUser(AuthUtil.getPrincipal());
         planRepo.save(travelPlan);
     }
 
     public int renameTravel(long travelId, String newName) {
-        return planRepo.setNameForTravel(travelId, newName);
+        if(ownsTravel(travelId))
+            return planRepo.setNameForTravel(travelId, newName);
+        return 0;
     }
 
     public void deleteTravel(long travelId) {
-        planRepo.deleteById(travelId);
+        if(ownsTravel(travelId))
+            planRepo.deleteById(travelId);
+    }
+
+    public void updateTravel(TravelPlanDTO updatedPlanDTO) {
+        TravelPlan travelPlan = mapper.map(updatedPlanDTO, TravelPlan.class);
+        travelPlan.setUser(AuthUtil.getPrincipal());
+        updateTravel(travelPlan);
     }
 
     public void updateTravel(TravelPlan updatedPlan) {
-        planRepo.deleteById(updatedPlan.getId());
-        planRepo.flush();
-        planRepo.save(updatedPlan);
+        if(ownsTravel(updatedPlan.getId())) {
+            planRepo.deleteById(updatedPlan.getId());
+            planRepo.flush();
+            planRepo.save(updatedPlan);
+        }
+    }
+
+    private boolean ownsTravel(long travelId) {
+        AppUser user = AuthUtil.getPrincipal();
+        Optional<TravelPlan> optionalPlan = planRepo.findById(travelId);
+        if(optionalPlan.isEmpty()) throw new IllegalArgumentException();
+        TravelPlan oldPlan = optionalPlan.get();
+        return oldPlan.getUser().getUsername().equals(user.getUsername());
     }
 
     public List<TravelPlanMinimumDTO> getTravelsForUser(String username, Pageable pageable) {
@@ -71,7 +86,11 @@ public class TravelPlanDataHandler {
         return plans;
     }
 
-    public Optional<TravelPlan> getTravel(long travelId) {
+    public TravelPlanMinimumDTO getTravel(long travelId) {
+        return planRepo.findById(travelId, TravelPlanMinimumDTO.class);
+    }
+
+    public Optional<TravelPlan> getTravelPlan(long travelId) {
         Optional<TravelPlan> byId = planRepo.findById(travelId);
         byId.ifPresent(t -> t.getDays().size());
         return byId;

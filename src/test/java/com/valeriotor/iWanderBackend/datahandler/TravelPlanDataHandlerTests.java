@@ -1,12 +1,9 @@
 package com.valeriotor.iWanderBackend.datahandler;
 
-import com.valeriotor.iWanderBackend.datahandler.repos.DayRepo;
-import com.valeriotor.iWanderBackend.datahandler.repos.LocationTimeRepo;
 import com.valeriotor.iWanderBackend.model.core.Day;
 import com.valeriotor.iWanderBackend.model.core.LocationTime;
 import com.valeriotor.iWanderBackend.model.core.TravelPlan;
 import com.valeriotor.iWanderBackend.model.dto.TravelPlanMinimumDTO;
-import com.valeriotor.iWanderBackend.util.IntRange;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +30,7 @@ public class TravelPlanDataHandlerTests {
     @Test
     public void testGetTravelByUserAndTravelID() {
         TravelPlanMinimumDTO firstPlan = getFirstTravelRedux(dataHandler);
-        assert firstPlan.getName().equals(dataHandler.getTravel(firstPlan.getId()).map(TravelPlan::getName).get());
+        assert firstPlan.getName().equals(dataHandler.getTravelPlan(firstPlan.getId()).map(TravelPlan::getName).get());
     }
 
     @Test
@@ -68,7 +65,7 @@ public class TravelPlanDataHandlerTests {
     }
 
     private TravelPlan getFirstTravel(TravelPlanDataHandler dataHandler) {
-        return dataHandler.getTravel(getFirstTravelRedux(dataHandler).getId()).get();
+        return dataHandler.getTravelPlan(getFirstTravelRedux(dataHandler).getId()).get();
     }
 
 }

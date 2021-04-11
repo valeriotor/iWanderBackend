@@ -15,6 +15,8 @@ public interface TravelPlanRepo extends JpaRepository<TravelPlan, Long> {
     //@Query("SELECT p FROM Travel_plan p JOIN FETCH p.days WHERE p.id = (:id)")
     //Optional<TravelPlan> findByIdAndFetchDaysEagerly(@Param("id") Long id);
 
+    <T> T findById(Long id, Class<T> type);
+
     @Modifying
     @Query("update TravelPlan plan set plan.name = :name where plan.id = :id")
     int setNameForTravel(@Param("id") Long id, @Param("name") String name);

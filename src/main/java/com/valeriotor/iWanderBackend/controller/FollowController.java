@@ -4,10 +4,7 @@ import com.valeriotor.iWanderBackend.datahandler.FollowingDataHandler;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,8 +21,8 @@ public class FollowController {
         this.followingDataHandler = followingDataHandler;
     }
 
-    @PostMapping("/askFollow")
-    public void askToFollow(String target) {
+    @PostMapping("/askFollow/{target}")
+    public void askToFollow(@PathVariable String target) {
         followingDataHandler.askToFollow(target);
     }
 
@@ -34,14 +31,19 @@ public class FollowController {
         return followingDataHandler.viewFollowRequests(pageable);
     }
 
-    @PostMapping("/confirmRequest")
-    public void confirmRequest(String askerName) {
+    @PutMapping("/confirmRequest/{askerName}")
+    public void confirmRequest(@PathVariable String askerName) {
         followingDataHandler.decideFollowingRequest(askerName, FollowingRequestDecideAction.CONFIRM);
     }
 
-    @PostMapping("/denyRequest")
-    public void denyRequest(String askerName) {
+    @PutMapping("/denyRequest/{askerName}")
+    public void denyRequest(@PathVariable String askerName) {
         followingDataHandler.decideFollowingRequest(askerName, FollowingRequestDecideAction.DENY);
+    }
+
+    @GetMapping("/viewFollowers")
+    public List<UserFrontDTO> viewFollowers(Pageable pageable) {
+        return followingDataHandler.viewFollowers(pageable);
     }
 
 }
