@@ -7,7 +7,6 @@ import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
-import com.valeriotor.iWanderBackend.util.IntRange;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -3,14 +3,12 @@ package com.valeriotor.iWanderBackend.datahandler;
 import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
-import com.valeriotor.iWanderBackend.util.IntRange;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 
-import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest

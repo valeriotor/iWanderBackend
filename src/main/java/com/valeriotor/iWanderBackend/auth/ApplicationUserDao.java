@@ -3,7 +3,6 @@ package com.valeriotor.iWanderBackend.auth;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
-import com.valeriotor.iWanderBackend.util.IntRange;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
