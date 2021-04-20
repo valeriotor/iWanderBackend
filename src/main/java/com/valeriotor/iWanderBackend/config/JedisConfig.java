@@ -1,6 +1,5 @@
 package com.valeriotor.iWanderBackend.config;
 
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.JedisPool;

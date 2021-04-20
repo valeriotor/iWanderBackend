@@ -1,10 +1,10 @@
 package com.valeriotor.iWanderBackend.datahandler;
 
 import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
-import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationRepoHandler;
 import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationDAO;
-import com.valeriotor.iWanderBackend.model.core.AppUser;
+import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationRepoHandler;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
+import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import org.dozer.Mapper;

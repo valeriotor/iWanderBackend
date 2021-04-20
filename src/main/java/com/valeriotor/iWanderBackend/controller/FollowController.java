@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.valeriotor.iWanderBackend.datahandler.FollowingDataHandler.*;
+import static com.valeriotor.iWanderBackend.datahandler.FollowingDataHandler.FollowingRequestDecideAction;
 
 @RestController
 @RequestMapping("/follow")

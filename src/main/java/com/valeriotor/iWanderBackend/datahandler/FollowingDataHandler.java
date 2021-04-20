@@ -15,9 +15,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static com.valeriotor.iWanderBackend.model.core.Following.*;
+import static com.valeriotor.iWanderBackend.model.core.Following.FollowingPK;
 import static com.valeriotor.iWanderBackend.model.core.FollowingRequest.FollowingRequestPK;
 
 @Service

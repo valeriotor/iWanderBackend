@@ -2,8 +2,6 @@ package com.valeriotor.iWanderBackend.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.valeriotor.iWanderBackend.model.core.LocationTime;
-import com.valeriotor.iWanderBackend.model.core.TravelPlan;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

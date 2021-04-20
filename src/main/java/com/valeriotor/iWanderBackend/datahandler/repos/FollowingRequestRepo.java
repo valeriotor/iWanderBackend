@@ -1,6 +1,5 @@
 package com.valeriotor.iWanderBackend.datahandler.repos;
 
-import com.valeriotor.iWanderBackend.model.core.Following;
 import com.valeriotor.iWanderBackend.model.core.FollowingRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
