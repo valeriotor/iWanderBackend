@@ -5,16 +5,16 @@ import com.valeriotor.iWanderBackend.model.core.Day;
 import java.time.LocalDate;
 
 public class DayMinimumDTO {
-    private final String cityName;
+    private final String cityId;
     private final LocalDate date;
 
     public DayMinimumDTO(Day day) {
-        this.cityName = "DummyCity";
+        this.cityId = "DummyCity";
         this.date = day.getDate();
     }
 
-    public String getCityName() {
-        return cityName;
+    public String getCityId() {
+        return cityId;
     }
 
     public LocalDate getDate() {
