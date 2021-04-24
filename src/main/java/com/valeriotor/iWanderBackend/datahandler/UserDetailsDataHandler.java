@@ -12,10 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +55,7 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
 
     @Override
     public Slice<UserMinimumDTO> findUsersByPrefix(String prefix, Pageable pageable) {
+        if(isPageableSortMalicious(pageable)) return new SliceImpl<>(new ArrayList<>());
         return userDetailsRepo.findByUsernameStartingWithIgnoreCase(prefix, pageable);
     }
 
@@ -81,5 +85,12 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
         return true;
     }
 
+    private boolean isPageableSortMalicious(Pageable pageable) {
+        for(Sort.Order order : pageable.getSort().toList()) {
+            if(order.getProperty().equals("password"))
+                return true;
+        }
+        return false;
+    }
 
 }
