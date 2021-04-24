@@ -22,12 +22,12 @@ public class ProfileDataController {
         this.applicationUserDao = applicationUserDao;
     }
 
-    @PostMapping("/editName")
+    @RequestMapping(value = "/editName", method = {RequestMethod.POST, RequestMethod.PUT})
     public void editName(String newName) {
         profileDataHandler.editName(newName);
     }
 
-    @PostMapping("/editSurname")
+    @RequestMapping(value = "/editSurname", method = {RequestMethod.POST, RequestMethod.PUT})
     public void editSurname(String newSurname) {
         profileDataHandler.editSurname(newSurname);
     }
@@ -38,7 +38,7 @@ public class ProfileDataController {
         return success ? null : new ErrorResponse(Error.USERNAME_ALREADY_TAKEN);
     }
 
-    @PutMapping("/setProfileImage")
+    @RequestMapping(value = "/setProfileImage", method = {RequestMethod.POST, RequestMethod.PUT})
     public void setProfileImage(@RequestParam MultipartFile image) throws IOException {
         applicationUserDao.setUserProfileImage(image.getBytes());
     }

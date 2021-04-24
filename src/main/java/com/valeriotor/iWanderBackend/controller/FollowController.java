@@ -27,21 +27,21 @@ public class FollowController {
     }
 
     @GetMapping("/viewRequests")
-    public List<UserFrontDTO> viewRequests(Pageable pageable) { // TODO add pagination
+    public List<UserFrontDTO> viewRequests(Pageable pageable) {
         return followingDataHandler.viewFollowRequests(pageable);
     }
 
-    @PutMapping("/confirmRequest/{askerName}")
+    @PostMapping("/confirmRequest/{askerName}")
     public void confirmRequest(@PathVariable String askerName) {
         followingDataHandler.decideFollowingRequest(askerName, FollowingRequestDecideAction.CONFIRM);
     }
 
-    @PutMapping("/denyRequest/{askerName}")
+    @PostMapping("/denyRequest/{askerName}")
     public void denyRequest(@PathVariable String askerName) {
         followingDataHandler.decideFollowingRequest(askerName, FollowingRequestDecideAction.DENY);
     }
 
-    @GetMapping("/viewFollowers")
+    @GetMapping("/viewFollowers") //TODO: permetti di vedere i follower di altri
     public List<UserFrontDTO> viewFollowers(Pageable pageable) {
         return followingDataHandler.viewFollowers(pageable);
     }

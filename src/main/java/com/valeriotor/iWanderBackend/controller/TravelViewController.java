@@ -40,7 +40,7 @@ public class TravelViewController {
         return travelPlanDataHandler.getLocationTimesForDayAtIndex(travelId, dayIndex, pageable);
     }
 
-    @PutMapping("/travel/{travelId}/rename")
+    @RequestMapping(value = "/travel/{travelId}/rename", method = {RequestMethod.POST, RequestMethod.PUT})
     public void renameTravel(@PathVariable long travelId, String newName) {
         travelPlanDataHandler.renameTravel(travelId, newName);
     }
