@@ -2,6 +2,7 @@ package com.valeriotor.iWanderBackend.controller;
 
 import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
 import com.valeriotor.iWanderBackend.datahandler.ProfileDataHandler;
+import com.valeriotor.iWanderBackend.model.dto.TextDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,21 @@ public class ProfileDataController {
     @RequestMapping(value = "/editSurname", method = {RequestMethod.POST, RequestMethod.PUT})
     public void editSurname(String newSurname) {
         profileDataHandler.editSurname(newSurname);
+    }
+
+    @RequestMapping(value = "/editEmail", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void editEmail(String newEmail) {
+        profileDataHandler.editEmail(newEmail);
+    }
+
+    @RequestMapping(value = "/editPreferences", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void editPreferences(int newPreferences) {
+        profileDataHandler.editPreferences(newPreferences);
+    }
+
+    @RequestMapping(value = "/editBio", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void editBio(@RequestBody TextDTO newBio) {
+        profileDataHandler.editBio(newBio.getText());
     }
 
     @PostMapping("/createProfile")

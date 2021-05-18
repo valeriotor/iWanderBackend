@@ -19,6 +19,8 @@ public class AppUser implements UserDetails{
     private LocalDate birthDate;
     private String bio;
     private String imageURL;
+    private int preferences;
+    private String email;
     //private final Collection<? extends GrantedAuthority> authorities;
     @Transient private final Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
     private boolean accountNonExpired;
@@ -216,5 +218,21 @@ public class AppUser implements UserDetails{
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public int getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(int preferences) {
+        this.preferences = preferences;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

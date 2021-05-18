@@ -1,37 +1,24 @@
 package com.valeriotor.iWanderBackend.model.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-public class UserCreationDTO {
+public class ProfileDTO {
     private String username;
-    private String password;
     private String name;
     private String surname;
     private LocalDate birthDate;
     private String bio;
     private int preferences;
-    private String email;
+    private String imgURL;
 
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public UserCreationDTO() {
+    public ProfileDTO() {
         username = "";
-        password = "";
         name = "";
         surname = "";
         birthDate = null;
         preferences = 0;
         bio = "";
-        email = "";
+        imgURL = "";
     }
 
     public String getUsername() {
@@ -40,14 +27,6 @@ public class UserCreationDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -74,6 +53,14 @@ public class UserCreationDTO {
         this.birthDate = birthDate;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     public int getPreferences() {
         return preferences;
     }
@@ -82,19 +69,11 @@ public class UserCreationDTO {
         this.preferences = preferences;
     }
 
-    public String getEmail() {
-        return email;
+    public String getImgURL() {
+        return imgURL;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
-
-    //public int[] getPreferences() {
-    //    return preferences;
-    //}
-//
-    //public void setPreferences(int[] preferences) {
-    //    this.preferences = preferences;
-    //}
 }

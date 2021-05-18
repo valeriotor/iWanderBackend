@@ -6,6 +6,7 @@ import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationRepoHandler
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
+import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,11 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
     @Override
     public Optional<AppUser> findUserDetailsByUsername(String username) {
         return userDetailsRepo.findById(username);
+    }
+
+    @Override
+    public Optional<UserFrontDTO> findUserByUsername(String username) {
+        return userDetailsRepo.findByUsernameIgnoreCase(username);
     }
 
     @Override

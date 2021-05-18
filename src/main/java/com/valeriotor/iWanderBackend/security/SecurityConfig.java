@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/profile/createProfile").permitAll()
+                .antMatchers("/findUserBy**").permitAll()
                 //.antMatchers("/**").permitAll()
                 .anyRequest()
                 .authenticated()

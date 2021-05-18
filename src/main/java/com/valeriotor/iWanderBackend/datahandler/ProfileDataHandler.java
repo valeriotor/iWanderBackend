@@ -28,4 +28,19 @@ public class ProfileDataHandler {
         userDetailsRepo.setSurnameForUser(principal.getUsername(), newSurname);
     }
 
+    public void editBio(String newBio) {
+        AppUser principal = AuthUtil.getPrincipal();
+        userDetailsRepo.setBioForUser(principal.getUsername(), newBio);
+    }
+
+    public void editEmail(String newEmail) {
+        AppUser principal = AuthUtil.getPrincipal();
+        userDetailsRepo.setEmailForUser(principal.getUsername(), newEmail);
+    }
+
+    public void editPreferences(int newPreferences) {
+        AppUser principal = AuthUtil.getPrincipal();
+        userDetailsRepo.setPreferencesForUser(principal.getUsername(), newPreferences);
+    }
+
 }
