@@ -48,6 +48,18 @@ public class ProfileDataController {
         profileDataHandler.editBio(newBio.getText());
     }
 
+    @RequestMapping(value = "/editPassword", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void editPassword(@RequestBody TextDTO newPassword) {
+        profileDataHandler.editPassword(newPassword.getText());
+    }
+
+    @GetMapping("/email")
+    public TextDTO getEmail() {
+        var text = new TextDTO();
+        text.setText(profileDataHandler.getEmail());
+        return text;
+    }
+
     @PostMapping("/createProfile")
     public ErrorResponse createProfile(@RequestBody UserCreationDTO userCreationDTO) {
         boolean success = applicationUserDao.createUserProfile(userCreationDTO);

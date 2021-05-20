@@ -1,6 +1,7 @@
 package com.valeriotor.iWanderBackend.controller;
 
 import com.valeriotor.iWanderBackend.datahandler.FollowingDataHandler;
+import com.valeriotor.iWanderBackend.model.dto.TextDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,21 @@ public class FollowController {
         this.followingDataHandler = followingDataHandler;
     }
 
+    @GetMapping("/checkFollow/{target}")
+    public TextDTO checkIfFollowing(@PathVariable String target) {
+        TextDTO dto = new TextDTO();
+        dto.setText(followingDataHandler.isFollowing(target) ? "true" : "false");
+        return dto;
+    }
+
     @PostMapping("/askFollow/{target}")
     public void askToFollow(@PathVariable String target) {
         followingDataHandler.askToFollow(target);
+    }
+
+    @PostMapping("/unfollow/{target}")
+    public void unfollow(@PathVariable String target) {
+        followingDataHandler.unfollow(target);
     }
 
     @GetMapping("/viewRequests")
@@ -44,6 +57,11 @@ public class FollowController {
     @GetMapping("/viewFollowers") //TODO: permetti di vedere i follower di altri
     public List<UserFrontDTO> viewFollowers(Pageable pageable) {
         return followingDataHandler.viewFollowers(pageable);
+    }
+
+    @GetMapping("/viewFollowees") //TODO: permetti di vedere i followees di altri
+    public List<UserFrontDTO> viewFollowees(Pageable pageable) {
+        return followingDataHandler.viewFollowees(pageable);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.valeriotor.iWanderBackend.model.core;
 
+import com.valeriotor.iWanderBackend.model.ProfileScope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,6 +28,9 @@ public class AppUser implements UserDetails{
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
+    @Enumerated
+    @Column(columnDefinition = "smallint")
+    private ProfileScope scope;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TravelPlan> plans;
     @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -65,6 +69,8 @@ public class AppUser implements UserDetails{
         followees = new ArrayList<>();
         askers = new ArrayList<>();
         targets = new ArrayList<>();
+        scope = ProfileScope.PUBLIC;
+        preferences = 3;
     }
 
     @Override
@@ -234,5 +240,13 @@ public class AppUser implements UserDetails{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public ProfileScope getScope() {
+        return scope;
+    }
+
+    public void setScope(ProfileScope scope) {
+        this.scope = scope;
     }
 }

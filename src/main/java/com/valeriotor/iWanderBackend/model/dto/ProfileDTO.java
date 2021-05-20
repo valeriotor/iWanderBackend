@@ -9,16 +9,16 @@ public class ProfileDTO {
     private LocalDate birthDate;
     private String bio;
     private int preferences;
-    private String imgURL;
+    private String imageURL;
 
-    public ProfileDTO() {
-        username = "";
-        name = "";
-        surname = "";
-        birthDate = null;
-        preferences = 0;
-        bio = "";
-        imgURL = "";
+    public ProfileDTO(String username, String name, String surname, LocalDate birthDate, String bio, int preferences, String imageURL) {
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.bio = bio;
+        this.preferences = preferences;
+        this.imageURL = imageURL;
     }
 
     public String getUsername() {
@@ -69,11 +69,24 @@ public class ProfileDTO {
         this.preferences = preferences;
     }
 
-    public String getImgURL() {
-        return imgURL;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setImgURL(String imgURL) {
-        this.imgURL = imgURL;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    @Override
+    public String toString() {
+        return "ProfileDTO{" +
+                "username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthDate=" + birthDate +
+                ", bio='" + bio + '\'' +
+                ", preferences=" + preferences +
+                ", imageURL='" + imageURL + '\'' +
+                '}';
     }
 }

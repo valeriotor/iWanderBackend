@@ -5,9 +5,9 @@ import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationDAO;
 import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationRepoHandler;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
+import com.valeriotor.iWanderBackend.model.dto.ProfileDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
-import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -60,9 +60,10 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
     }
 
     @Override
-    public Slice<UserMinimumDTO> findUsersByPrefix(String prefix, Pageable pageable) {
+    public Slice<UserFrontDTO> findUsersByPrefix(String prefix, Pageable pageable) {
         if(isPageableSortMalicious(pageable)) return new SliceImpl<>(new ArrayList<>());
-        return userDetailsRepo.findByUsernameStartingWithIgnoreCase(prefix, pageable);
+        return userDetailsRepo.findByUsernameStartingWithIgnoreCaseAndUsernameNot(prefix, AuthUtil.getPrincipal().getUsername(), pageable);
+        //return userDetailsRepo.findByUsernameStartingWithIgnoreCase(prefix, pageable);
     }
 
     @Override
@@ -89,6 +90,11 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
         userDetailsRepo.setImageUrlForUser(updatedUser.getUsername(), imageUrl);
         userDetailsRepo.flush();
         return true;
+    }
+
+    @Override
+    public Optional<ProfileDTO> findProfileByUsername(String username) {
+        return userDetailsRepo.findByUsername(username);
     }
 
     private boolean isPageableSortMalicious(Pageable pageable) {

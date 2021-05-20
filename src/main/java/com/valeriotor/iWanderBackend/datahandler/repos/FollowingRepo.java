@@ -9,5 +9,6 @@ import java.util.List;
 public interface FollowingRepo extends JpaRepository<Following, Following.FollowingPK> {
 
     List<Following> findByFollowee_Username(String followeeUsername, Pageable pageable);
+    List<Following> findByFollower_Username(String followerUsername, Pageable pageable);
 
 }

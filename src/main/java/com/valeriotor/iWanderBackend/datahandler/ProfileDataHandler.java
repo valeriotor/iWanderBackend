@@ -3,6 +3,7 @@ package com.valeriotor.iWanderBackend.datahandler;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,10 +13,12 @@ import javax.transaction.Transactional;
 public class ProfileDataHandler {
 
     private final UserDetailsRepo userDetailsRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ProfileDataHandler(UserDetailsRepo userDetailsRepo) {
+    public ProfileDataHandler(UserDetailsRepo userDetailsRepo, PasswordEncoder passwordEncoder) {
         this.userDetailsRepo = userDetailsRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void editName(String newName) {
@@ -43,4 +46,14 @@ public class ProfileDataHandler {
         userDetailsRepo.setPreferencesForUser(principal.getUsername(), newPreferences);
     }
 
+    public void editPassword(String newPassword) {
+        AppUser principal = AuthUtil.getPrincipal();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        userDetailsRepo.setPasswordForUser(principal.getUsername(), encodedPassword);
+    }
+
+    public String getEmail() {
+        AppUser principal = AuthUtil.getPrincipal();
+        return principal.getEmail();
+    }
 }

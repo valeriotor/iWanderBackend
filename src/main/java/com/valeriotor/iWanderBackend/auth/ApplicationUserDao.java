@@ -1,6 +1,7 @@
 package com.valeriotor.iWanderBackend.auth;
 
 import com.valeriotor.iWanderBackend.model.core.AppUser;
+import com.valeriotor.iWanderBackend.model.dto.ProfileDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
@@ -21,7 +22,7 @@ public interface ApplicationUserDao {
 
     void addUserDetails(List<AppUser> userDetailsList);
 
-    Slice<UserMinimumDTO> findUsersByPrefix(String prefix, Pageable pageable);
+    Slice<UserFrontDTO> findUsersByPrefix(String prefix, Pageable pageable);
 
     long getUserCount();
 
@@ -29,4 +30,5 @@ public interface ApplicationUserDao {
 
     boolean setUserProfileImage(byte[] bytes);
 
+    Optional<ProfileDTO> findProfileByUsername(String username);
 }

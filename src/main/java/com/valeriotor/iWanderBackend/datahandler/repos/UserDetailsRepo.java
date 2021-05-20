@@ -1,6 +1,7 @@
 package com.valeriotor.iWanderBackend.datahandler.repos;
 
 import com.valeriotor.iWanderBackend.model.core.AppUser;
+import com.valeriotor.iWanderBackend.model.dto.ProfileDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +16,15 @@ import java.util.Optional;
 
 public interface UserDetailsRepo extends JpaRepository<AppUser, String> {
 
-    Slice<UserMinimumDTO> findByUsernameStartingWithIgnoreCase(String prefix, Pageable pageable);
+    Slice<UserFrontDTO> findByUsernameStartingWithIgnoreCase(String prefix, Pageable pageable);
+
+    Slice<UserFrontDTO> findByUsernameStartingWithIgnoreCaseAndUsernameNot(String prefix, String user, Pageable pageable);
 
     List<UserFrontDTO> findAllByUsernameIn(List<String> usernames, Pageable pageable);
 
     Optional<UserFrontDTO> findByUsernameIgnoreCase(String username);
+
+    Optional<ProfileDTO> findByUsername(String username);
 
     @Modifying
     @Query("update AppUser details set details.name = :name where details.username = :username")
@@ -44,5 +49,9 @@ public interface UserDetailsRepo extends JpaRepository<AppUser, String> {
     @Modifying
     @Query("update AppUser details set details.imageURL = :imageURL where details.username = :username")
     int setImageUrlForUser(@Param("username") String username, @Param("imageURL") String imageURL);
+
+    @Modifying
+    @Query("update AppUser details set details.password = :password where details.username = :username")
+    int setPasswordForUser(@Param("username") String username, @Param("password") String password);
 
 }

@@ -22,7 +22,7 @@ public class FollowingDataHandlerTests {
         this.followingDataHandler = followingDataHandler;
     }
 
-    @Test
+    /*@Test
     @Order(0)
     @WithUserDetails("valeriotor")
     public void testAskFollow() {
@@ -48,6 +48,6 @@ public class FollowingDataHandlerTests {
         assert followers.size() == 1;
         assert followers.get(0).getUsername().equals("valeriotor");
 
-    }
+    }*/
 
 }

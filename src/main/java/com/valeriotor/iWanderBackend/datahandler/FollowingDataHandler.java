@@ -3,6 +3,7 @@ package com.valeriotor.iWanderBackend.datahandler;
 import com.valeriotor.iWanderBackend.datahandler.repos.FollowingRepo;
 import com.valeriotor.iWanderBackend.datahandler.repos.FollowingRequestRepo;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
+import com.valeriotor.iWanderBackend.model.ProfileScope;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.core.Following;
 import com.valeriotor.iWanderBackend.model.core.FollowingRequest;
@@ -43,6 +44,16 @@ public class FollowingDataHandler {
         return followers;
     }
 
+    public List<UserFrontDTO> viewFollowees(Pageable pageable) {
+        AppUser user = AuthUtil.getPrincipal();
+        List<Following> followings = followingRepo.findByFollower_Username(user.getUsername(), pageable);
+        List<UserFrontDTO> followees = new ArrayList<>();
+        for(Following f : followings) {
+            followees.add(new UserFrontDTO(f.getFollowee()));
+        }
+        return followees;
+    }
+
     public boolean askToFollow(String targetName) { // TODO add 'public' profiles that don't need confirmation
         Optional<AppUser> targetOptional = userDetailsRepo.findById(targetName);
         if(targetOptional.isEmpty())
@@ -52,13 +63,46 @@ public class FollowingDataHandler {
         String askerName = asker.getUsername();
         if(askerName.equals(targetName))
             return false;
-        FollowingRequestPK followingRequestPK = new FollowingRequestPK(askerName, targetName);
-        FollowingPK followingPK = new FollowingPK(askerName, targetName);
-        if(followingRequestRepo.existsById(followingRequestPK) || followingRepo.existsById(followingPK))
+        if(target.getScope() == ProfileScope.PUBLIC) {
+            Following following = new Following(asker, target, LocalDateTime.now());
+            followingRepo.save(following);
+            return true;
+        } else {
+            FollowingRequestPK followingRequestPK = new FollowingRequestPK(askerName, targetName);
+            FollowingPK followingPK = new FollowingPK(askerName, targetName);
+            if (followingRequestRepo.existsById(followingRequestPK) || followingRepo.existsById(followingPK))
+                return false;
+            FollowingRequest followingRequest = new FollowingRequest(asker, target, LocalDateTime.now());
+            followingRequestRepo.save(followingRequest);
+            return true;
+        }
+    }
+
+    public boolean unfollow(String targetName) {
+        Optional<AppUser> targetOptional = userDetailsRepo.findById(targetName);
+        if(targetOptional.isEmpty())
             return false;
-        FollowingRequest followingRequest = new FollowingRequest(asker, target, LocalDateTime.now());
-        followingRequestRepo.save(followingRequest);
+        AppUser target = targetOptional.get();
+        AppUser asker = AuthUtil.getPrincipal();
+        String askerName = asker.getUsername();
+        if(askerName.equals(targetName))
+            return false;
+        FollowingPK followingPK = new FollowingPK(askerName, targetName);
+        followingRepo.deleteById(followingPK);
         return true;
+    }
+
+    public boolean isFollowing(String targetName) {
+        Optional<AppUser> targetOptional = userDetailsRepo.findById(targetName);
+        if(targetOptional.isEmpty())
+            return false;
+        AppUser target = targetOptional.get();
+        AppUser asker = AuthUtil.getPrincipal();
+        String askerName = asker.getUsername();
+        if(askerName.equals(targetName))
+            return false;
+        FollowingPK followingPK = new FollowingPK(askerName, targetName);
+        return followingRepo.existsById(followingPK);
     }
 
     public List<UserFrontDTO> viewFollowRequests(Pageable pageable) {
