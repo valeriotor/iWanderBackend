@@ -20,13 +20,16 @@ public class ImageLocationRepoHandler implements ImageLocationDAO {
     }
 
     @Override
-    public String saveImageAndGetURL(byte[] bytes, AppUser userDetails) {
-        String path = "/file/image/" + userDetails.getUsername() + "/" + LocalTime.now().toString();
-        String oldUrl = userDetails.getImageURL();
-        if(oldUrl != null) {
-            imageRepo.deleteById(oldUrl);
+    public void deleteImageByURL(String url) {
+        if(url != null) {
+            imageRepo.deleteById(url);
             imageRepo.flush();
         }
+    }
+
+    @Override
+    public String saveImageAndGetURL(byte[] bytes, AppUser userDetails) {
+        String path = "/file/image/" + userDetails.getUsername() + "/" + LocalTime.now().toString();
         ImageEntity image = new ImageEntity();
         image.setPath(path);
         image.setBytes(bytes);

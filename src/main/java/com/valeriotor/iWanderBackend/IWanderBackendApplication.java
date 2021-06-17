@@ -20,7 +20,7 @@ public class IWanderBackendApplication {
 	@Bean(name = "mapper")
 	public Mapper mapper() {
 		DozerBeanMapper mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Collections.singletonList("dozerJdk8Converters.xml"));
+		mapper.setMappingFiles(Collections.singletonList("dozer_configuration.xml"));
 		return mapper;
 	}
 

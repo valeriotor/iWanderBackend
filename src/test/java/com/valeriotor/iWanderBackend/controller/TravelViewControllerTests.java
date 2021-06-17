@@ -1,5 +1,6 @@
 package com.valeriotor.iWanderBackend.controller;
 
+import com.google.common.collect.Lists;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
 import com.valeriotor.iWanderBackend.model.dto.*;
@@ -47,12 +48,14 @@ public class TravelViewControllerTests {
     public void testAddTravel() {
         List<DayDTO> days = new ArrayList<>();
         List<LocationTimeDTO> locationTimes = new ArrayList<>();
+        List<String> locationComments = Lists.newArrayList("Nice place!");
         TravelPlanDTO planDTO = new TravelPlanDTO(0, "Berlin", VisibilityType.PUBLIC, LocalDate.now(), days);
 
         DayDTO dayDTO = new DayDTO(LocalDate.now(), "dummy", planDTO, locationTimes);
         days.add(dayDTO);
 
         LocationTimeDTO locationTimeDTO = new LocationTimeDTO(LocalTime.of(23,10), 0, 0, "Brandenburg Gate", "dummy", dayDTO);
+        locationTimeDTO.setComments(locationComments);
         locationTimes.add(locationTimeDTO);
         travelViewController.addTravel(planDTO);
         long id = 0;
@@ -70,6 +73,7 @@ public class TravelViewControllerTests {
         assert valsBerlinDays.size() == 1;
         assert valsFirstBerlinDayLocationTimes.size() == 1;
         assert valsFirstBerlinDayLocationTimes.get(0).getName().equals("Brandenburg Gate");
+        assert valsFirstBerlinDayLocationTimes.get(0).getComments().get(0).equals("Nice place!");
         travelViewController.deleteTravel(id);
     }
 

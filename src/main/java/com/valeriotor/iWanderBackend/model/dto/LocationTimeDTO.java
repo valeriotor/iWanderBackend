@@ -3,6 +3,8 @@ package com.valeriotor.iWanderBackend.model.dto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationTimeDTO {
     private LocalTime timeStamp;
@@ -12,6 +14,7 @@ public class LocationTimeDTO {
     private String nameId;
     @JsonBackReference
     private DayDTO day;
+    private List<String> comments;
 
     public LocationTimeDTO() {
     }
@@ -23,6 +26,7 @@ public class LocationTimeDTO {
         this.name = name;
         this.nameId = nameId;
         this.day = day;
+        this.comments = new ArrayList<>();
     }
 
     public LocalTime getTimeStamp() {
@@ -71,5 +75,13 @@ public class LocationTimeDTO {
 
     public void setDay(DayDTO day) {
         this.day = day;
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
     }
 }

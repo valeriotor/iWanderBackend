@@ -2,14 +2,13 @@ package com.valeriotor.iWanderBackend.controller;
 
 import com.valeriotor.iWanderBackend.datahandler.TravelPlanDataHandler;
 import com.valeriotor.iWanderBackend.model.core.Day;
-import com.valeriotor.iWanderBackend.model.dto.DayMinimumDTO;
-import com.valeriotor.iWanderBackend.model.dto.LocationTimeDTO;
-import com.valeriotor.iWanderBackend.model.dto.TravelPlanDTO;
-import com.valeriotor.iWanderBackend.model.dto.TravelPlanMinimumDTO;
+import com.valeriotor.iWanderBackend.model.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +57,25 @@ public class TravelViewController {
     @PutMapping("/travel/update")
     public void updateTravel(@RequestBody TravelPlanDTO travelPlan) {
         travelPlanDataHandler.updateTravel(travelPlan);
+    }
+
+    @RequestMapping(value = "/travel/{travelId}/addImage", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void addTravelImage(@PathVariable long travelId, @RequestParam MultipartFile image) throws IOException {
+        travelPlanDataHandler.addImageToTravel(travelId, image.getBytes());
+    }
+
+    @DeleteMapping("/travel/{travelId}/deleteImage")
+    public void deleteTravelImage(@PathVariable long travelId, @RequestParam String imageUrl) {
+        travelPlanDataHandler.removeImageFromTravel(travelId, imageUrl);
+    }
+
+    @GetMapping("/travel/{travelId}/images")
+    public List<TextDTO> getTravelImages(@PathVariable long travelId) {
+        return travelPlanDataHandler.getImageUrls(travelId).stream().map(string -> {
+            var dto = new TextDTO();
+            dto.setText(string);
+            return dto;
+        }).collect(Collectors.toList());
     }
 
 }

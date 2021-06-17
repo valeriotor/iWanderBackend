@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class LocationTime {
 
@@ -19,6 +22,8 @@ public class LocationTime {
     @JoinColumn(name = "day_id")
     @JsonBackReference
     private Day day;
+    @ElementCollection
+    private List<String> comments;
 
     public LocationTime() {
         this(0, null, 0, 0, "", "", null);
@@ -32,6 +37,7 @@ public class LocationTime {
         this.longitude = longitude;
         this.name = name;
         this.nameId = nameId;
+        this.comments = new ArrayList<>();
     }
 
     public long getLocationTimeId() {
@@ -102,5 +108,13 @@ public class LocationTime {
                 ",name='" + name + '\'' +
                 ",nameId='" + nameId + '\'' +
                 "}";
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
     }
 }

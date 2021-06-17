@@ -24,6 +24,9 @@ public class TravelPlan implements Comparable<TravelPlan>{
     @OneToMany(mappedBy = "travelPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Day> days;
+    @ElementCollection
+    private List<String> imageUrls;
+
 
     public TravelPlan() {
         this(null, 0, "", null, LocalDate.now(), new ArrayList<>());
@@ -36,6 +39,7 @@ public class TravelPlan implements Comparable<TravelPlan>{
         this.visibility = visibility;
         this.startDate = startDate;
         this.days = new ArrayList<>(days);
+        this.imageUrls = new ArrayList<>();
     }
 
     public TravelPlan(AppUser user, long id, String name, VisibilityType visibility, List<Day> days) {
@@ -45,6 +49,7 @@ public class TravelPlan implements Comparable<TravelPlan>{
         this.visibility = visibility;
         startDate = days.isEmpty() ? LocalDate.of(1970, 1, 1) : days.get(0).getDate();
         this.days = new ArrayList<>(days);
+        this.imageUrls = new ArrayList<>();
     }
 
     public long getId() {
@@ -127,4 +132,21 @@ public class TravelPlan implements Comparable<TravelPlan>{
                 ", days=" + days +
                 '}';
     }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    public void addImageUrl(String url){
+        imageUrls.add(url);
+    }
+
+    public void removeImageUrl(String url){
+        imageUrls.remove(url);
+    }
+
 }

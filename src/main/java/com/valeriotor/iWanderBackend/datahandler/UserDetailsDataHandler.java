@@ -86,6 +86,7 @@ public class UserDetailsDataHandler implements ApplicationUserDao {
     public boolean setUserProfileImage(byte[] bytes) {
         AppUser user = AuthUtil.getPrincipal();
         AppUser updatedUser = userDetailsRepo.findById(user.getUsername()).orElse(user);
+        imageLocationDAO.deleteImageByURL(updatedUser.getImageURL());
         String imageUrl = imageLocationDAO.saveImageAndGetURL(bytes, updatedUser);
         userDetailsRepo.setImageUrlForUser(updatedUser.getUsername(), imageUrl);
         userDetailsRepo.flush();

@@ -1,6 +1,8 @@
 package com.valeriotor.iWanderBackend.datahandler;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationDAO;
 import com.valeriotor.iWanderBackend.datahandler.repos.CityRepo;
 import com.valeriotor.iWanderBackend.datahandler.repos.DayRepo;
 import com.valeriotor.iWanderBackend.datahandler.repos.LocationTimeRepo;
@@ -25,16 +27,22 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class TravelPlanDataHandler {
+    private final Mapper mapper;
+    private final TravelPlanRepo planRepo;
+    private final DayRepo dayRepo;
+    private final CityRepo cityRepo;
+    private final LocationTimeRepo locationTimeRepo;
+    private final ImageLocationDAO imageLocationDAO;
+
     @Autowired
-    private Mapper mapper;
-    @Autowired
-    private TravelPlanRepo planRepo;
-    @Autowired
-    private DayRepo dayRepo;
-    @Autowired
-    private CityRepo cityRepo;
-    @Autowired
-    private LocationTimeRepo locationTimeRepo;
+    public TravelPlanDataHandler(Mapper mapper, TravelPlanRepo planRepo, DayRepo dayRepo, CityRepo cityRepo, LocationTimeRepo locationTimeRepo, ImageLocationDAO imageLocationDAO) {
+        this.mapper = mapper;
+        this.planRepo = planRepo;
+        this.dayRepo = dayRepo;
+        this.cityRepo = cityRepo;
+        this.locationTimeRepo = locationTimeRepo;
+        this.imageLocationDAO = imageLocationDAO;
+    }
 
     public void addTravel(TravelPlanDTO planDTO) {
         TravelPlan travelPlan = mapper.map(planDTO, TravelPlan.class);
@@ -126,6 +134,37 @@ public class TravelPlanDataHandler {
 
     public Optional<City> getCityById(String id) {
         return cityRepo.findById(id);
+    }
+
+
+    @Transactional
+    public void addImageToTravel(long travelId, byte[] bytes) {
+        AppUser user = AuthUtil.getPrincipal();
+        String imageURL = imageLocationDAO.saveImageAndGetURL(bytes, user);
+        Optional<TravelPlan> travelPlan = planRepo.findById(travelId);
+        travelPlan.ifPresent(plan -> plan.addImageUrl(imageURL));
+        planRepo.flush();
+    }
+
+
+    @Transactional
+    public void removeImageFromTravel(long travelId, String imageUrl) {
+        AppUser user = AuthUtil.getPrincipal();
+        Optional<TravelPlan> plan = planRepo.findById(travelId);
+        if(plan.isPresent() && plan.get().getUser().getUsername().equals(user.getUsername())) {
+            if(plan.get().getImageUrls().contains(imageUrl)) {
+                imageLocationDAO.deleteImageByURL(imageUrl);
+                plan.get().removeImageUrl(imageUrl);
+            }
+        }
+    }
+
+    public List<String> getImageUrls(long travelId) {
+        Optional<TravelPlan> travelPlan = planRepo.findById(travelId);
+        if(travelPlan.isPresent()) {
+            return travelPlan.get().getImageUrls();
+        }
+        return Lists.newArrayList();
     }
 
 }

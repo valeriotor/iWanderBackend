@@ -14,6 +14,8 @@ public class DayDTO {
     private TravelPlanDTO travelPlan;
     @JsonManagedReference
     private List<LocationTimeDTO> locationTimes;
+    @JsonManagedReference
+    private DayRouteDTO route;
 
     public DayDTO() {
         locationTimes = new ArrayList<>();
@@ -56,5 +58,13 @@ public class DayDTO {
 
     public void setLocationTimes(List<LocationTimeDTO> locationTimes) {
         this.locationTimes = locationTimes;
+    }
+
+    public DayRouteDTO getRoute() {
+        return route;
+    }
+
+    public void setRoute(DayRouteDTO route) {
+        this.route = route;
     }
 }
