@@ -7,7 +7,7 @@ public class DayRoute {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
-    @OneToOne(optional = false)
+    @OneToOne
     private Day day;
     @Lob
     private byte[] route;

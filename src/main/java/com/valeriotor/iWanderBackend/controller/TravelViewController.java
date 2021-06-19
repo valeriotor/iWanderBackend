@@ -50,13 +50,19 @@ public class TravelViewController {
     }
 
     @PostMapping("/travel/add")
-    public void addTravel(@RequestBody TravelPlanDTO travelPlan) {
-        travelPlanDataHandler.addTravel(travelPlan);
+    public TextDTO addTravel(@RequestBody TravelPlanDTO travelPlan) {
+        long id = travelPlanDataHandler.addTravel(travelPlan);
+        var dto = new TextDTO();
+        dto.setText(String.valueOf(id));
+        return dto;
     }
 
     @PutMapping("/travel/update")
-    public void updateTravel(@RequestBody TravelPlanDTO travelPlan) {
-        travelPlanDataHandler.updateTravel(travelPlan);
+    public TextDTO updateTravel(@RequestBody TravelPlanDTO travelPlan) {
+        long id = travelPlanDataHandler.updateTravel(travelPlan);
+        var dto = new TextDTO();
+        dto.setText(String.valueOf(id));
+        return dto;
     }
 
     @RequestMapping(value = "/travel/{travelId}/addImage", method = {RequestMethod.POST, RequestMethod.PUT})
@@ -71,11 +77,33 @@ public class TravelViewController {
 
     @GetMapping("/travel/{travelId}/images")
     public List<TextDTO> getTravelImages(@PathVariable long travelId) {
-        return travelPlanDataHandler.getImageUrls(travelId).stream().map(string -> {
-            var dto = new TextDTO();
-            dto.setText(string);
-            return dto;
-        }).collect(Collectors.toList());
+        return travelPlanDataHandler.getImageUrls(travelId).stream().map(this::stringToTextDTO).collect(Collectors.toList());
+    }
+
+    @GetMapping("/travel/{travelId}/{dayIndex}/comments")
+    public List<TextDTO> getDayComments(@PathVariable long travelId, @PathVariable int dayIndex, Pageable pageable) {
+        return travelPlanDataHandler.getDayComments(travelId, dayIndex).stream().map(this::stringToTextDTO).collect(Collectors.toList());
+    }
+
+    @GetMapping("/travel/{travelId}/comments")
+    public List<TextDTO> getTravelComments(@PathVariable long travelId, Pageable pageable) {
+        return travelPlanDataHandler.getTravelComments(travelId).stream().map(this::stringToTextDTO).collect(Collectors.toList());
+    }
+
+    private TextDTO stringToTextDTO(String s) {
+        var dto = new TextDTO();
+        dto.setText(s);
+        return dto;
+    }
+
+    @GetMapping("/travel/{travelId}/routes")
+    public List<DayRouteDTO> getTravelRoutes(@PathVariable long travelId) {
+        return travelPlanDataHandler.getTravelRoutes(travelId);
+    }
+
+    @RequestMapping(value = "/travel/{travelId}/updateComments", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void updateComments(@PathVariable long travelId, @RequestBody List<CommentDTO> commentDTOS) {
+        travelPlanDataHandler.setComments(travelId, commentDTOS);
     }
 
 }

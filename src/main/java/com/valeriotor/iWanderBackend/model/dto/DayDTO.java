@@ -16,6 +16,7 @@ public class DayDTO {
     private List<LocationTimeDTO> locationTimes;
     @JsonManagedReference
     private DayRouteDTO route;
+    private List<String> comments;
 
     public DayDTO() {
         locationTimes = new ArrayList<>();
@@ -26,6 +27,7 @@ public class DayDTO {
         this.cityId = cityId;
         this.travelPlan = travelPlan;
         this.locationTimes = locationTimes;
+        this.comments = new ArrayList<>();
     }
 
     public LocalDate getDate() {
@@ -66,5 +68,13 @@ public class DayDTO {
 
     public void setRoute(DayRouteDTO route) {
         this.route = route;
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
     }
 }

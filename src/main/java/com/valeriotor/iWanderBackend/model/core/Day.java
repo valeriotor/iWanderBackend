@@ -23,8 +23,10 @@ public class Day implements Comparable<Day>, Cloneable{
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private List<LocationTime> locationTimes;
-    @OneToOne(optional = true)
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
     private DayRoute route;
+    @ElementCollection
+    private List<String> comments;
 
     public Day() {
         this(0, null, null, null, new ArrayList<>());
@@ -36,6 +38,7 @@ public class Day implements Comparable<Day>, Cloneable{
         this.cityId = cityId;
         this.travelPlan = travelPlan;
         this.locationTimes = locationTimes;
+        this.comments = new ArrayList<>();
     }
 
     public long getId() {
@@ -104,5 +107,13 @@ public class Day implements Comparable<Day>, Cloneable{
                 ", cityId='" + cityId + '\'' +
                 ", locationTimes=" + locationTimes +
                 '}';
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
     }
 }

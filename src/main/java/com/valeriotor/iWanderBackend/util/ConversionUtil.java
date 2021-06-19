@@ -38,4 +38,15 @@ public class ConversionUtil {
         return null;
     }
 
+    public static CoordinateDTO[] bytesToRoutesArray(byte[] binary) {
+        List<CoordinateDTO> coordinateDTOS = bytesToRoute(binary);
+        CoordinateDTO[] coordinateDTOS1 = new CoordinateDTO[coordinateDTOS.size()];
+        int i = 0;
+        for (CoordinateDTO c :
+                coordinateDTOS) {
+            coordinateDTOS1[i++] = c;
+        }
+        return coordinateDTOS1;
+    }
+
 }
