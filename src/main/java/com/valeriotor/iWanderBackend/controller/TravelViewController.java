@@ -28,6 +28,12 @@ public class TravelViewController {
         return travelPlanDataHandler.getTravel(travelId);
     }
 
+    @GetMapping("/travel/{travelId}/dayNumber")
+    public TextDTO getDayNumber(@PathVariable long travelId) {
+        int number = travelPlanDataHandler.getNumberOfDaysByTravelId(travelId);
+        return new TextDTO(String.valueOf(number));
+    }
+
     @GetMapping("/travel/{travelId}/days")
     public List<DayMinimumDTO> getDaysForTravel(@PathVariable long travelId, Pageable pageable) {
         List<Day> days = travelPlanDataHandler.getDaysByTravelId(travelId, pageable);
@@ -37,6 +43,12 @@ public class TravelViewController {
     @GetMapping("/travel/{travelId}/{dayIndex}/locations")
     public List<LocationTimeDTO> getLocationTimesForDay(@PathVariable long travelId, @PathVariable int dayIndex, Pageable pageable) {
         return travelPlanDataHandler.getLocationTimesForDayAtIndex(travelId, dayIndex, pageable);
+    }
+
+    @GetMapping("/travel/{travelId}/locations")
+    public List<List<LocationTimeDTO>> getLocationTimesForTravel(@PathVariable long travelId) {
+        List<List<LocationTimeDTO>> locationTimesForTravel = travelPlanDataHandler.getLocationTimesForTravel(travelId);
+        return locationTimesForTravel;
     }
 
     @RequestMapping(value = "/travel/{travelId}/rename", method = {RequestMethod.POST, RequestMethod.PUT})
@@ -78,6 +90,11 @@ public class TravelViewController {
     @GetMapping("/travel/{travelId}/images")
     public List<TextDTO> getTravelImages(@PathVariable long travelId) {
         return travelPlanDataHandler.getImageUrls(travelId).stream().map(this::stringToTextDTO).collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/travel/{travelId}/setMainImage", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void addMainTravelImage(@PathVariable long travelId, @RequestParam MultipartFile image) throws IOException {
+        travelPlanDataHandler.setMainTravelImage(travelId, image.getBytes());
     }
 
     @GetMapping("/travel/{travelId}/{dayIndex}/comments")

@@ -8,6 +8,7 @@ public class DayRoute {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     @OneToOne
+    @JoinColumn(name = "day_id")
     private Day day;
     @Lob
     private byte[] route;

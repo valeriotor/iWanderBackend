@@ -10,16 +10,18 @@ public class TravelPlanMinimumDTO implements Comparable<TravelPlanMinimumDTO>{
     private final String name;
     private final VisibilityType visibility;
     private final LocalDate startDate;
+    private final String mainImageUrl;
 
-    public TravelPlanMinimumDTO(long id, String name, VisibilityType visibility, LocalDate startDate) {
+    public TravelPlanMinimumDTO(long id, String name, VisibilityType visibility, LocalDate startDate, String mainImageUrl) {
         this.id = id;
         this.name = name;
         this.visibility = visibility;
         this.startDate = startDate;
+        this.mainImageUrl = mainImageUrl;
     }
 
     public TravelPlanMinimumDTO(TravelPlan plan) {
-        this(plan.getId(), plan.getName(), plan.getVisibility(), plan.getStartDate());
+        this(plan.getId(), plan.getName(), plan.getVisibility(), plan.getStartDate(), plan.getMainImageUrl());
     }
 
     public long getId() {
@@ -43,6 +45,10 @@ public class TravelPlanMinimumDTO implements Comparable<TravelPlanMinimumDTO>{
         return startDate.compareTo(o.getStartDate());
     }
 
+    public String getMainImageUrl() {
+        return mainImageUrl;
+    }
+
     @Override
     public String toString() {
         return "TravelPlanMinimumDTO{" +
@@ -52,4 +58,5 @@ public class TravelPlanMinimumDTO implements Comparable<TravelPlanMinimumDTO>{
                 ", startDate=" + startDate +
                 '}';
     }
+
 }

@@ -21,7 +21,7 @@ public class Day implements Comparable<Day>, Cloneable{
     private TravelPlan travelPlan;
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<LocationTime> locationTimes;
-    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "day", optional = true, cascade = CascadeType.ALL)
     private DayRoute route;
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL)
     private List<DayComment> comments;

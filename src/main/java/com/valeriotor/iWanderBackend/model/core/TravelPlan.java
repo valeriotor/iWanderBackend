@@ -25,6 +25,7 @@ public class TravelPlan implements Comparable<TravelPlan>{
     private List<Day> days;
     @ElementCollection
     private List<String> imageUrls;
+    private String mainImageUrl;
 
 
     public TravelPlan() {
@@ -148,4 +149,11 @@ public class TravelPlan implements Comparable<TravelPlan>{
         imageUrls.remove(url);
     }
 
+    public String getMainImageUrl() {
+        return mainImageUrl;
+    }
+
+    public void setMainImageUrl(String mainImageUrl) {
+        this.mainImageUrl = mainImageUrl;
+    }
 }

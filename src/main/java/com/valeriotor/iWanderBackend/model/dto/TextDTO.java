@@ -6,6 +6,10 @@ public class TextDTO {
     public TextDTO() {
     }
 
+    public TextDTO(String text) {
+        this.text = text;
+    }
+
     public String getText() {
         return text;
     }

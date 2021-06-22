@@ -100,9 +100,24 @@ public class TravelPlanDataHandler {
         return byId;
     }
 
+    public int getNumberOfDaysByTravelId(long travelId) {
+        Optional<TravelPlan> byId = planRepo.findById(travelId);
+        return byId.map(travelPlan -> travelPlan.getDays().size()).orElse(0);
+    }
+
     public List<Day> getDaysByTravelId(long travelId, Pageable pageable) {
         List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, pageable);
         return days;
+    }
+
+    public List<List<LocationTimeDTO>> getLocationTimesForTravel(long travelId) {
+        List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("date")));
+        List<List<LocationTimeDTO>> lists = new ArrayList<>();
+        for(Day d : days) {
+            DayDTO dayDTO = mapper.map(d, DayDTO.class);
+            lists.add(dayDTO.getLocationTimes());
+        }
+        return lists;
     }
 
     public List<LocationTimeDTO> getLocationTimesForDayAtIndex(long travelId, int dayIndex, Pageable pageable) {
@@ -158,6 +173,15 @@ public class TravelPlanDataHandler {
                 plan.get().removeImageUrl(imageUrl);
             }
         }
+    }
+
+    @Transactional
+    public void setMainTravelImage(long travelId, byte[] bytes) {
+        AppUser user = AuthUtil.getPrincipal();
+        String imageURL = imageLocationDAO.saveImageAndGetURL(bytes, user);
+        Optional<TravelPlan> travelPlan = planRepo.findById(travelId);
+        travelPlan.ifPresent(plan -> plan.setMainImageUrl(imageURL));
+        planRepo.flush();
     }
 
     public List<String> getImageUrls(long travelId) {

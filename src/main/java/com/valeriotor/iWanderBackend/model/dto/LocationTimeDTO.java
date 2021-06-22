@@ -74,4 +74,16 @@ public class LocationTimeDTO {
     public void setDay(DayDTO day) {
         this.day = day;
     }
+
+    @Override
+    public String toString() {
+        return "LocationTimeDTO{" +
+                "timeStamp=" + timeStamp +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", name='" + name + '\'' +
+                ", nameId='" + nameId + '\'' +
+                ", day=" + day +
+                '}';
+    }
 }
