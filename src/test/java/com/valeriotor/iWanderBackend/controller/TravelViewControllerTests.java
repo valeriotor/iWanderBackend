@@ -48,7 +48,6 @@ public class TravelViewControllerTests {
     public void testAddTravel() {
         List<DayDTO> days = new ArrayList<>();
         List<LocationTimeDTO> locationTimes = new ArrayList<>();
-        List<String> locationComments = Lists.newArrayList("Nice place!");
         TravelPlanDTO planDTO = new TravelPlanDTO(0, "Berlin", VisibilityType.PUBLIC, LocalDate.now(), days);
 
         DayDTO dayDTO = new DayDTO(LocalDate.now(), "dummy", planDTO, locationTimes);
@@ -62,6 +61,7 @@ public class TravelViewControllerTests {
         routeDTO.setRoute(coordinateDTOS);
         routeDTO.setDay(dayDTO);
         dayDTO.setRoute(routeDTO);
+        List<CommentDTO> locationComments = Lists.newArrayList(new CommentDTO("place", "niceplace", "www.something.com", dayDTO));
 
         LocationTimeDTO locationTimeDTO = new LocationTimeDTO(LocalTime.of(23,10), 0, 0, "Brandenburg Gate", "dummy", dayDTO);
         dayDTO.setComments(locationComments);
@@ -71,13 +71,13 @@ public class TravelViewControllerTests {
         List<TravelPlanMinimumDTO> valsTravels = travelViewController.getTravelsByUserID("valeriotor", PageRequest.of(0, 10));
         List<DayMinimumDTO> valsBerlinDays = null;
         List<LocationTimeDTO> valsFirstBerlinDayLocationTimes = null;
-        List<TextDTO> dtos = null;
+        List<CommentDTO> dtos = null;
         for(TravelPlanMinimumDTO planMinimumDTO : valsTravels) {
             if(planMinimumDTO.getName().equals("Berlin")) {
                 id = planMinimumDTO.getId();
                 valsBerlinDays = travelViewController.getDaysForTravel(id, PageRequest.of(0, 10));
                 valsFirstBerlinDayLocationTimes = travelViewController.getLocationTimesForDay(id, 0, PageRequest.of(0, 10, Sort.by("timeStamp")));
-                //dtos = travelViewController.getDayComments(id, 0, PageRequest.of(0, 20));
+                dtos = travelViewController.getDayComments(id, 0, PageRequest.of(0, 20));
                 break;
             }
         }
@@ -86,7 +86,7 @@ public class TravelViewControllerTests {
         assert valsFirstBerlinDayLocationTimes.get(0).getName().equals("Brandenburg Gate");
 
         testGetRoutes(id, coordinateDTOS);
-        //assert dtos.get(0).getText().equals("Nice place!");
+        assert dtos.get(0).getText().equals("niceplace");
         testSetComments(id);
         travelViewController.deleteTravel(id);
     }
@@ -100,13 +100,23 @@ public class TravelViewControllerTests {
     }
 
     private void testSetComments(long travelId) {
-        CommentDTO commentDTO = new CommentDTO(0, "Nice place!");
-        CommentDTO commentDTO1 = new CommentDTO(0, "Ok not so nice");
-        travelViewController.updateComments(travelId, Lists.newArrayList(commentDTO, commentDTO1));
-        List<TextDTO> dayComments = travelViewController.getDayComments(travelId, 0, PageRequest.of(0, 20));
-        assert dayComments.size() == 2;
-        assert dayComments.get(0).getText().equals("Nice place!");
-        assert dayComments.get(1).getText().equals("Ok not so nice");
+        CommentDTO commentDTO = new CommentDTO("Place2", "niceplace2", "image", null);
+        CommentDTO commentDTO1 = new CommentDTO("Place3", "niceplace3", "image2", null);
+        travelViewController.updateCommentsDay(travelId, 0, Lists.newArrayList(commentDTO, commentDTO1));
+        List<CommentDTO> commentDTOS = travelViewController.getDayComments(travelId, 0, PageRequest.of(0, 20));
+        assert commentDTOS.size() == 2;
+        assert commentDTOS.get(0).getText().equals("niceplace2");
+        assert commentDTOS.get(1).getText().equals("niceplace3");
     }
+
+    //private void testSetComments(long travelId) {
+    //    CommentDTO commentDTO = new CommentDTO(0, "Nice place!");
+    //    CommentDTO commentDTO1 = new CommentDTO(0, "Ok not so nice");
+    //    travelViewController.updateComments(travelId, Lists.newArrayList(commentDTO, commentDTO1));
+    //    List<TextDTO> dayComments = travelViewController.getDayComments(travelId, 0, PageRequest.of(0, 20));
+    //    assert dayComments.size() == 2;
+    //    assert dayComments.get(0).getText().equals("Nice place!");
+    //    assert dayComments.get(1).getText().equals("Ok not so nice");
+    //}
 
 }

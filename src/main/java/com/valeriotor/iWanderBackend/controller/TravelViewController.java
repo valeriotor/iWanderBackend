@@ -81,13 +81,13 @@ public class TravelViewController {
     }
 
     @GetMapping("/travel/{travelId}/{dayIndex}/comments")
-    public List<TextDTO> getDayComments(@PathVariable long travelId, @PathVariable int dayIndex, Pageable pageable) {
-        return travelPlanDataHandler.getDayComments(travelId, dayIndex).stream().map(this::stringToTextDTO).collect(Collectors.toList());
+    public List<CommentDTO> getDayComments(@PathVariable long travelId, @PathVariable int dayIndex, Pageable pageable) {
+        return travelPlanDataHandler.getDayComments(travelId, dayIndex, pageable);
     }
 
     @GetMapping("/travel/{travelId}/comments")
-    public List<TextDTO> getTravelComments(@PathVariable long travelId, Pageable pageable) {
-        return travelPlanDataHandler.getTravelComments(travelId).stream().map(this::stringToTextDTO).collect(Collectors.toList());
+    public List<CommentDTO> getTravelComments(@PathVariable long travelId, Pageable pageable) {
+        return travelPlanDataHandler.getTravelComments(travelId, pageable);
     }
 
     private TextDTO stringToTextDTO(String s) {
@@ -101,9 +101,14 @@ public class TravelViewController {
         return travelPlanDataHandler.getTravelRoutes(travelId);
     }
 
-    @RequestMapping(value = "/travel/{travelId}/updateComments", method = {RequestMethod.POST, RequestMethod.PUT})
-    public void updateComments(@PathVariable long travelId, @RequestBody List<CommentDTO> commentDTOS) {
-        travelPlanDataHandler.setComments(travelId, commentDTOS);
+    //@RequestMapping(value = "/travel/{travelId}/updateComments", method = {RequestMethod.POST, RequestMethod.PUT})
+    //public void updateComments(@PathVariable long travelId, @RequestBody List<CommentDTO> commentDTOS) {
+    //    travelPlanDataHandler.setComments(travelId, commentDTOS);
+    //}
+
+    @RequestMapping(value = "/travel/{travelId}/{dayIndex}/updateComments", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void updateCommentsDay(@PathVariable long travelId, @PathVariable int dayIndex, @RequestBody List<CommentDTO> textDTOS) {
+        travelPlanDataHandler.setComments(travelId, dayIndex, textDTOS);
     }
 
 }

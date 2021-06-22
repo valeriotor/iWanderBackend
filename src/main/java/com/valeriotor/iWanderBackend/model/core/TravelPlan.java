@@ -22,7 +22,6 @@ public class TravelPlan implements Comparable<TravelPlan>{
     private VisibilityType visibility;
     private LocalDate startDate;
     @OneToMany(mappedBy = "travelPlan", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Day> days;
     @ElementCollection
     private List<String> imageUrls;

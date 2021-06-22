@@ -16,7 +16,8 @@ public class DayDTO {
     private List<LocationTimeDTO> locationTimes;
     @JsonManagedReference
     private DayRouteDTO route;
-    private List<String> comments;
+    @JsonManagedReference
+    private List<CommentDTO> comments;
 
     public DayDTO() {
         locationTimes = new ArrayList<>();
@@ -70,11 +71,11 @@ public class DayDTO {
         this.route = route;
     }
 
-    public List<String> getComments() {
+    public List<CommentDTO> getComments() {
         return comments;
     }
 
-    public void setComments(List<String> comments) {
+    public void setComments(List<CommentDTO> comments) {
         this.comments = comments;
     }
 }

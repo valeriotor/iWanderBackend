@@ -3,13 +3,9 @@ package com.valeriotor.iWanderBackend.datahandler;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationDAO;
-import com.valeriotor.iWanderBackend.datahandler.repos.CityRepo;
-import com.valeriotor.iWanderBackend.datahandler.repos.DayRepo;
-import com.valeriotor.iWanderBackend.datahandler.repos.LocationTimeRepo;
-import com.valeriotor.iWanderBackend.datahandler.repos.TravelPlanRepo;
+import com.valeriotor.iWanderBackend.datahandler.repos.*;
 import com.valeriotor.iWanderBackend.model.core.*;
 import com.valeriotor.iWanderBackend.model.dto.*;
-import com.valeriotor.iWanderBackend.util.ConversionUtil;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -31,15 +27,17 @@ public class TravelPlanDataHandler {
     private final DayRepo dayRepo;
     private final CityRepo cityRepo;
     private final LocationTimeRepo locationTimeRepo;
+    private final DayCommentsRepo dayCommentsRepo;
     private final ImageLocationDAO imageLocationDAO;
 
     @Autowired
-    public TravelPlanDataHandler(Mapper mapper, TravelPlanRepo planRepo, DayRepo dayRepo, CityRepo cityRepo, LocationTimeRepo locationTimeRepo, ImageLocationDAO imageLocationDAO) {
+    public TravelPlanDataHandler(Mapper mapper, TravelPlanRepo planRepo, DayRepo dayRepo, CityRepo cityRepo, LocationTimeRepo locationTimeRepo, DayCommentsRepo dayCommentsRepo, ImageLocationDAO imageLocationDAO) {
         this.mapper = mapper;
         this.planRepo = planRepo;
         this.dayRepo = dayRepo;
         this.cityRepo = cityRepo;
         this.locationTimeRepo = locationTimeRepo;
+        this.dayCommentsRepo = dayCommentsRepo;
         this.imageLocationDAO = imageLocationDAO;
     }
 
@@ -170,22 +168,20 @@ public class TravelPlanDataHandler {
         return Lists.newArrayList();
     }
 
-    public List<String> getDayComments(long travelId, int dayIndex) {
+    public List<CommentDTO> getDayComments(long travelId, int dayIndex, Pageable pageable) {
         List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("date")));
         if(days.size() <= dayIndex || dayIndex < 0)
             return new ArrayList<>();
-        List<String> comments = days.get(dayIndex).getComments();
-        comments.size();
+        List<CommentDTO> comments = dayCommentsRepo.findByDay_Id(days.get(dayIndex).getId(), pageable);
         return comments;
     }
 
-    public List<String> getTravelComments(long travelId) {
+    public List<CommentDTO> getTravelComments(long travelId, Pageable pageable) {
         Optional<TravelPlan> optional = planRepo.findById(travelId);
         if(optional.isPresent()) {
             TravelPlan plan = optional.get();
-            List<Day> days = plan.getDays();
-            List<String> comments = days.stream().flatMap(day -> day.getComments().stream()).collect(Collectors.toList());
-            return comments;
+            List<Long> days = plan.getDays().stream().map(Day::getId).collect(Collectors.toList());
+            return dayCommentsRepo.findAllByDay_IdIn(days, pageable);
         }
         return new ArrayList<>();
     }
@@ -205,19 +201,35 @@ public class TravelPlanDataHandler {
         return routes;
     }
 
-    public void setComments(long travelId, List<CommentDTO> comments) {
+    //public void setComments(long travelId, List<CommentDTO> comments) {
+    //    List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("date")));
+    //    for (Day d : days) {
+    //        d.getComments().clear();
+    //    }
+    //    for (CommentDTO c : comments) {
+    //        if(c.getDayIndex() >= 0 && c.getDayIndex() < days.size())
+    //            days.get(c.getDayIndex()).getComments().add(c.getText());
+    //    }
+    //    for (Day d: days) {
+    //        dayRepo.save(d);
+    //    }
+    //}
+
+    public void setComments(long travelId, int dayIndex, List<CommentDTO> comments) {
         List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("date")));
-        for (Day d : days) {
-            d.getComments().clear();
-        }
+        if(days.size() <= dayIndex || dayIndex < 0)
+            return;
+        Day d = days.get(dayIndex);
+        dayCommentsRepo.deleteCommentsWithDayId(d);
+        List<DayComment> dayComments = new ArrayList<>();
         for (CommentDTO c :
                 comments) {
-            if(c.getDayIndex() >= 0 && c.getDayIndex() < days.size())
-                days.get(c.getDayIndex()).getComments().add(c.getText());
+            DayComment dayComment = mapper.map(c, DayComment.class);
+            dayComment.setDay(d);
+            dayComments.add(dayComment);
         }
-        for (Day d: days) {
-            dayRepo.save(d);
-        }
+        d.getComments().addAll(dayComments);
+        dayRepo.save(d);
     }
 
 }

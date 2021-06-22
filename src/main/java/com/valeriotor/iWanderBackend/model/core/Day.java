@@ -18,15 +18,13 @@ public class Day implements Comparable<Day>, Cloneable{
     private String cityId;
     @ManyToOne(optional = false)
     @JoinColumn(name = "travel_plan_id")
-    @JsonBackReference
     private TravelPlan travelPlan;
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JsonManagedReference
     private List<LocationTime> locationTimes;
     @OneToOne(optional = true, cascade = CascadeType.ALL)
     private DayRoute route;
-    @ElementCollection
-    private List<String> comments;
+    @OneToMany(mappedBy = "day", cascade = CascadeType.ALL)
+    private List<DayComment> comments;
 
     public Day() {
         this(0, null, null, null, new ArrayList<>());
@@ -109,11 +107,11 @@ public class Day implements Comparable<Day>, Cloneable{
                 '}';
     }
 
-    public List<String> getComments() {
+    public List<DayComment> getComments() {
         return comments;
     }
 
-    public void setComments(List<String> comments) {
+    public void setComments(List<DayComment> comments) {
         this.comments = comments;
     }
 }

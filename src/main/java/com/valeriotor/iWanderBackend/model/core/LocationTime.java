@@ -20,7 +20,6 @@ public class LocationTime {
     private String nameId;
     @ManyToOne(optional = false)
     @JoinColumn(name = "day_id")
-    @JsonBackReference
     private Day day;
 
     public LocationTime() {

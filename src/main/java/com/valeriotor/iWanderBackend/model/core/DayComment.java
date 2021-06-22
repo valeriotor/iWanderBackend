@@ -1,29 +1,36 @@
-package com.valeriotor.iWanderBackend.model.dto;
+package com.valeriotor.iWanderBackend.model.core;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.valeriotor.iWanderBackend.model.core.DayComment;
+import javax.persistence.*;
 
-public class CommentDTO {
-    @JsonBackReference
-    private DayDTO day;
+@Entity
+public class DayComment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "day_id")
+    private Day day;
     private String location;
     private String text;
     private String imageURL;
 
-    public CommentDTO() {
+    public DayComment() {
+        this(0, "", "", "");
     }
 
-    public CommentDTO(DayComment dayComment) {
-        location = dayComment.getLocation();
-        text = dayComment.getText();
-        imageURL = dayComment.getImageURL();
-    }
-
-    public CommentDTO(String location, String text, String imageURL, DayDTO day) {
+    public DayComment(long id, String location, String text, String imageURL) {
+        this.id = id;
         this.location = location;
         this.text = text;
         this.imageURL = imageURL;
-        this.day = day;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getLocation() {
@@ -50,11 +57,11 @@ public class CommentDTO {
         this.imageURL = imageURL;
     }
 
-    public DayDTO getDay() {
+    public Day getDay() {
         return day;
     }
 
-    public void setDay(DayDTO day) {
+    public void setDay(Day day) {
         this.day = day;
     }
 }
