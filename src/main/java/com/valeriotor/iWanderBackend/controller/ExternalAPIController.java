@@ -99,7 +99,6 @@ public class ExternalAPIController {
     private Optional<String> checkCache(String key) {
         Jedis jedis = jedisPool.getResource();
         String cached = jedis.get(key);
-        System.out.println(cached);
         return cached == null ? Optional.empty() : Optional.of(cached);
     }
 

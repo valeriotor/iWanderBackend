@@ -1,6 +1,5 @@
 package com.valeriotor.iWanderBackend.model.core;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
 
 import javax.persistence.*;
@@ -8,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 @Entity
 public class TravelPlan implements Comparable<TravelPlan>{
     @Id

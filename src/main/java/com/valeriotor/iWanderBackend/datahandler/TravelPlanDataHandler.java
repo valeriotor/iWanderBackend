@@ -71,8 +71,7 @@ public class TravelPlanDataHandler {
         if(ownsTravel(updatedPlan.getId())) {
             planRepo.deleteById(updatedPlan.getId());
             planRepo.flush();
-            long id = planRepo.save(updatedPlan).getId();
-            return id;
+            return planRepo.save(updatedPlan).getId();
         }
         return -1;
     }
@@ -86,8 +85,7 @@ public class TravelPlanDataHandler {
     }
 
     public List<TravelPlanMinimumDTO> getTravelsForUser(String username, Pageable pageable) {
-        List<TravelPlanMinimumDTO> plans = planRepo.findAllByUser_usernameIn(ImmutableList.of(username), pageable);
-        return plans;
+        return planRepo.findAllByUser_usernameIn(ImmutableList.of(username), pageable);
     }
 
     public TravelPlanMinimumDTO getTravel(long travelId) {
@@ -106,8 +104,7 @@ public class TravelPlanDataHandler {
     }
 
     public List<Day> getDaysByTravelId(long travelId, Pageable pageable) {
-        List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, pageable);
-        return days;
+        return dayRepo.findAllByTravelPlan_Id(travelId, pageable);
     }
 
     public List<List<LocationTimeDTO>> getLocationTimesForTravel(long travelId) {
@@ -126,14 +123,12 @@ public class TravelPlanDataHandler {
             return new ArrayList<>();
         long dayId = days.get(dayIndex).getId();
         List<LocationTime> locationTimes = locationTimeRepo.findAllByDay_Id(dayId, pageable);
-        List<LocationTimeDTO> locationTimeDTOS = convertLocationTimesToDTOs(locationTimes);
-        return locationTimeDTOS;
+        return convertLocationTimesToDTOs(locationTimes);
     }
 
     public List<LocationTimeDTO> getLocationTimesByDayId(long dayId, Pageable pageable) {
         List<LocationTime> locationTimes = locationTimeRepo.findAllByDay_Id(dayId, pageable);
-        List<LocationTimeDTO> locationTimeDTOS = convertLocationTimesToDTOs(locationTimes);
-        return locationTimeDTOS;
+        return convertLocationTimesToDTOs(locationTimes);
     }
 
     private List<LocationTimeDTO> convertLocationTimesToDTOs(List<LocationTime> locationTimes) {
@@ -196,8 +191,7 @@ public class TravelPlanDataHandler {
         List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("date")));
         if(days.size() <= dayIndex || dayIndex < 0)
             return new ArrayList<>();
-        List<CommentDTO> comments = dayCommentsRepo.findByDay_Id(days.get(dayIndex).getId(), pageable);
-        return comments;
+        return dayCommentsRepo.findByDay_Id(days.get(dayIndex).getId(), pageable);
     }
 
     public List<CommentDTO> getTravelComments(long travelId, Pageable pageable) {
@@ -224,20 +218,6 @@ public class TravelPlanDataHandler {
         }
         return routes;
     }
-
-    //public void setComments(long travelId, List<CommentDTO> comments) {
-    //    List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("date")));
-    //    for (Day d : days) {
-    //        d.getComments().clear();
-    //    }
-    //    for (CommentDTO c : comments) {
-    //        if(c.getDayIndex() >= 0 && c.getDayIndex() < days.size())
-    //            days.get(c.getDayIndex()).getComments().add(c.getText());
-    //    }
-    //    for (Day d: days) {
-    //        dayRepo.save(d);
-    //    }
-    //}
 
     public void setComments(long travelId, int dayIndex, List<CommentDTO> comments) {
         List<Day> days = dayRepo.findAllByTravelPlan_Id(travelId, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("date")));
