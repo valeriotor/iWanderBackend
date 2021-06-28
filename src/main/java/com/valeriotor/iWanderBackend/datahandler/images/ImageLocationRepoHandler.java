@@ -3,9 +3,12 @@ package com.valeriotor.iWanderBackend.datahandler.images;
 import com.valeriotor.iWanderBackend.datahandler.images.repos.ImageRepo;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.core.ImageEntity;
+import com.valeriotor.iWanderBackend.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Optional;
 
@@ -42,6 +45,14 @@ public class ImageLocationRepoHandler implements ImageLocationDAO {
     public byte[] getImageBytes(String url) {
         Optional<ImageEntity> imageEntity = imageRepo.findById(url);
         return imageEntity.isPresent() ? imageEntity.get().getBytes() : new byte[0];
+    }
+
+    @Override
+    public byte[] getReducedImageBytes(String url, int maxWidth, int maxHeight) throws IOException {
+        byte[] bytes = getImageBytes(url);
+        BufferedImage bufferedImage = ImageUtil.resizeImage(bytes, 200, 200);
+        bytes = ImageUtil.imageToBytes(bufferedImage);
+        return bytes;
     }
 
 
