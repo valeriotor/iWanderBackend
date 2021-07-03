@@ -132,11 +132,7 @@ public class TravelPlanDataHandler {
     }
 
     private List<LocationTimeDTO> convertLocationTimesToDTOs(List<LocationTime> locationTimes) {
-        List<LocationTimeDTO> locationTimeDTOS = new ArrayList<>();
-        for(LocationTime lt : locationTimes) {
-            locationTimeDTOS.add(mapper.map(lt, LocationTimeDTO.class));
-        }
-        return locationTimeDTOS;
+        return locationTimes.stream().map(LocationTimeDTO::convertWithoutDay).collect(Collectors.toList());
     }
 
     public List<List<LocationTime>> getLocationTimesByDaysIn(List<Day> days) {

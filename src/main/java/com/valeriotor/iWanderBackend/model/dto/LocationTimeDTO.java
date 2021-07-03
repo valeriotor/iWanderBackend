@@ -1,12 +1,18 @@
 package com.valeriotor.iWanderBackend.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.valeriotor.iWanderBackend.model.core.LocationTime;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LocationTimeDTO {
+
+    public static LocationTimeDTO convertWithoutDay(LocationTime locationTime) {
+        return  new LocationTimeDTO(locationTime.getTimeStamp(), locationTime.getLatitude(), locationTime.getLongitude(), locationTime.getName(), locationTime.getNameId(), null);
+    }
+
     private LocalTime timeStamp;
     private double latitude;
     private double longitude;
