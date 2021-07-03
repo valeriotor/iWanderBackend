@@ -82,10 +82,12 @@ public class TestDataCreator {
         var day4SanFrancisco = new Day(0, LocalDate.of(2021, 10, 4), "dummy", planSanFrancisco, new ArrayList<>());
 
         var pantheon = new LocationTime(0, LocalTime.of(23, 44), 0, 0, "Pantheon", "dummy", day1Roma);
+        //var colosseum = new LocationTime(0, LocalTime.of(12, 44), 0, 0, "Colosseum", "dummy", day1Roma);
         var siliconValley = new LocationTime(0, LocalTime.of(23, 44), 0, 0, "Silicon Valley", "dummy", day1SanFrancisco);
 
         day4LTs.add(siliconValley);
         day6LTs.add(pantheon);
+        //day6LTs.add(colosseum);
 
         planRoma.addDay(day1Roma);
         planZurigo.addDay(day1Zurigo);
