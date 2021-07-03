@@ -21,25 +21,31 @@ public class JedisHandler {
     }
 
     public Optional<String> checkCache(String key) {
-        Jedis jedis = jedisPool.getResource();
-        String cached = jedis.get(key);
+        String cached;
+        try (Jedis jedis = jedisPool.getResource()) {
+            cached = jedis.get(key);
+        }
         return cached == null ? Optional.empty() : Optional.of(cached);
     }
 
     public void addToCache(String key, String value, int secondsToExpire) {
-        Jedis jedis = jedisPool.getResource();
-        jedis.set(key, value, SetParams.setParams().ex(secondsToExpire));
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.set(key, value, SetParams.setParams().ex(secondsToExpire));
+        }
     }
 
     public Optional<byte[]> checkCacheBytes(String key) {
-        Jedis jedis = jedisPool.getResource();
-        byte[] cached = jedis.get(key.getBytes());
+        byte[] cached;
+        try (Jedis jedis = jedisPool.getResource()) {
+            cached = jedis.get(key.getBytes());
+        }
         return cached == null ? Optional.empty() : Optional.of(cached);
     }
 
     public void addToCacheBytes(String key, byte[] value, int secondsToExpire) {
-        Jedis jedis = jedisPool.getResource();
-        jedis.set(key.getBytes(), value, SetParams.setParams().ex(secondsToExpire));
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.set(key.getBytes(), value, SetParams.setParams().ex(secondsToExpire));
+        }
     }
 
 }

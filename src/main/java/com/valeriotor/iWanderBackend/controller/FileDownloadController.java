@@ -35,11 +35,14 @@ public class FileDownloadController {
         byte[] bytes = null;
         if(reduced) {
             Optional<byte[]> optionalBytes = jedisHandler.checkCacheBytes(path);
-            if(optionalBytes.isPresent())
+            if(optionalBytes.isPresent()) {
                 bytes = optionalBytes.get();
+            }
             else {
                 bytes = imageLocationDAO.getReducedImageBytes(path, 200, 200);
-                jedisHandler.addToCacheBytes(path, bytes, 86400);
+                if(bytes != null && bytes.length>0) {
+                    jedisHandler.addToCacheBytes(path, bytes, 86400);
+                }
             }
         } else {
             bytes = imageLocationDAO.getImageBytes(path);
