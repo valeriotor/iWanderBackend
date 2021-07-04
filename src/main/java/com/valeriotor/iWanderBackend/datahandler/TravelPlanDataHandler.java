@@ -103,8 +103,8 @@ public class TravelPlanDataHandler {
         return byId.map(travelPlan -> travelPlan.getDays().size()).orElse(0);
     }
 
-    public List<Day> getDaysByTravelId(long travelId, Pageable pageable) {
-        return dayRepo.findAllByTravelPlan_Id(travelId, pageable);
+    public List<DayMinimumDTO> getDaysByTravelId(long travelId, Pageable pageable) {
+        return dayRepo.findAllByTravelPlan_Id(travelId, pageable).stream().map(DayMinimumDTO::new).collect(Collectors.toList());
     }
 
     public List<List<LocationTimeDTO>> getLocationTimesForTravel(long travelId) {

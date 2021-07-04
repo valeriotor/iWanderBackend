@@ -18,7 +18,7 @@ public interface UserDetailsRepo extends JpaRepository<AppUser, String> {
 
     Slice<UserFrontDTO> findByUsernameStartingWithIgnoreCase(String prefix, Pageable pageable);
 
-    Slice<UserFrontDTO> findByUsernameStartingWithIgnoreCaseAndUsernameNot(String prefix, String user, Pageable pageable);
+    Slice<UserFrontDTO> findByUsernameStartingWithIgnoreCaseAndUsernameNot(String prefix, String excludedUser, Pageable pageable);
 
     List<UserFrontDTO> findAllByUsernameIn(List<String> usernames, Pageable pageable);
 

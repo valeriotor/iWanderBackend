@@ -36,8 +36,7 @@ public class TravelViewController {
 
     @GetMapping("/travel/{travelId}/days")
     public List<DayMinimumDTO> getDaysForTravel(@PathVariable long travelId, Pageable pageable) {
-        List<Day> days = travelPlanDataHandler.getDaysByTravelId(travelId, pageable);
-        return days.stream().map(DayMinimumDTO::new).collect(Collectors.toList());
+        return travelPlanDataHandler.getDaysByTravelId(travelId, pageable);
     }
 
     @GetMapping("/travel/{travelId}/{dayIndex}/locations")
