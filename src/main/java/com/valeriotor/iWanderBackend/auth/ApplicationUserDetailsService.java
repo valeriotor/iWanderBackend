@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApplicationUserDetailsService implements UserDetailsService {
 
-    private final ApplicationUserDao dao;
+    private final ApplicationUserDAO dao;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ApplicationUserDetailsService(PasswordEncoder passwordEncoder, @Qualifier("datahandler") ApplicationUserDao dao) {
+    public ApplicationUserDetailsService(PasswordEncoder passwordEncoder, @Qualifier("datahandler") ApplicationUserDAO dao) {
         this.passwordEncoder = passwordEncoder;
         this.dao = dao;
     }

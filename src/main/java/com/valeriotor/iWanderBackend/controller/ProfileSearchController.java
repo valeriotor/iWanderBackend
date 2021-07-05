@@ -1,9 +1,8 @@
 package com.valeriotor.iWanderBackend.controller;
 
-import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
+import com.valeriotor.iWanderBackend.auth.ApplicationUserDAO;
 import com.valeriotor.iWanderBackend.model.dto.ProfileDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
-import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -17,7 +16,7 @@ import java.util.Optional;
 public class ProfileSearchController {
 
     @Autowired
-    private ApplicationUserDao applicationUserDao;
+    private ApplicationUserDAO applicationUserDao;
 
     @GetMapping("/findUser")
     public List<UserFrontDTO> getProfilesByPrefix(String prefix, Pageable pageable) {

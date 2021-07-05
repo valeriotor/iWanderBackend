@@ -1,6 +1,6 @@
 package com.valeriotor.iWanderBackend.controller;
 
-import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
+import com.valeriotor.iWanderBackend.auth.ApplicationUserDAO;
 import com.valeriotor.iWanderBackend.datahandler.ProfileDataHandler;
 import com.valeriotor.iWanderBackend.model.dto.TextDTO;
 import com.valeriotor.iWanderBackend.model.dto.UserCreationDTO;
@@ -15,10 +15,10 @@ import java.io.IOException;
 public class ProfileDataController {
 
     private final ProfileDataHandler profileDataHandler;
-    private final ApplicationUserDao applicationUserDao;
+    private final ApplicationUserDAO applicationUserDao;
 
     @Autowired
-    public ProfileDataController(ProfileDataHandler profileDataHandler, ApplicationUserDao applicationUserDao) {
+    public ProfileDataController(ProfileDataHandler profileDataHandler, ApplicationUserDAO applicationUserDao) {
         this.profileDataHandler = profileDataHandler;
         this.applicationUserDao = applicationUserDao;
     }

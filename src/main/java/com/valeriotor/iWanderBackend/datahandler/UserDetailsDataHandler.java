@@ -1,6 +1,6 @@
 package com.valeriotor.iWanderBackend.datahandler;
 
-import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
+import com.valeriotor.iWanderBackend.auth.ApplicationUserDAO;
 import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationDAO;
 import com.valeriotor.iWanderBackend.datahandler.images.ImageLocationRepoHandler;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository("datahandler")
-public class UserDetailsDataHandler implements ApplicationUserDao {
+public class UserDetailsDataHandler implements ApplicationUserDAO {
 
     private final Mapper mapper;
     private final UserDetailsRepo userDetailsRepo;

@@ -1,9 +1,8 @@
 package com.valeriotor.iWanderBackend.datahandler;
 
-import com.valeriotor.iWanderBackend.auth.ApplicationUserDao;
+import com.valeriotor.iWanderBackend.auth.ApplicationUserDAO;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
-import com.valeriotor.iWanderBackend.model.dto.UserMinimumDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +17,7 @@ public class ProfileDataHandlerTests {
 
 
     @Autowired
-    private ApplicationUserDao applicationUserDao;
+    private ApplicationUserDAO applicationUserDao;
 
     @Test
     public void testSourceSizeAndAdd() {
