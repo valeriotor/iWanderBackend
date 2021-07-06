@@ -31,12 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/profile/createProfile").permitAll()
                 .antMatchers("/findUserBy**").permitAll()
-                //.antMatchers("/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .httpBasic()
-                //.formLogin()
                 .and()
                 .headers().frameOptions().disable();
     }
