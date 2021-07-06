@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.valeriotor.iWanderBackend.datahandler.repos.UserDetailsRepo;
 import com.valeriotor.iWanderBackend.model.VisibilityType;
 import com.valeriotor.iWanderBackend.model.dto.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class TravelViewControllerTests {
@@ -40,8 +44,8 @@ public class TravelViewControllerTests {
 
     private void testGetLocationTimesForDay(long travelId) {
         List<LocationTimeDTO> locationTimesForDay = travelViewController.getLocationTimesForDay(travelId,0, PageRequest.of(0, 4, Sort.by("timeStamp")));
-        assert locationTimesForDay.size() == 1;
-        assert locationTimesForDay.get(0).getName().equals("Pantheon");
+        assertEquals(locationTimesForDay.size(), 1);
+        assertEquals(locationTimesForDay.get(0).getName(), "Pantheon");
     }
 
     @Test
@@ -81,12 +85,12 @@ public class TravelViewControllerTests {
                 break;
             }
         }
-        assert valsBerlinDays.size() == 1;
-        assert valsFirstBerlinDayLocationTimes.size() == 1;
-        assert valsFirstBerlinDayLocationTimes.get(0).getName().equals("Brandenburg Gate");
+        assertEquals(valsBerlinDays.size(), 1);
+        assertEquals(valsFirstBerlinDayLocationTimes.size(), 1);
+        assertEquals(valsFirstBerlinDayLocationTimes.get(0).getName(), "Brandenburg Gate");
 
         testGetRoutes(id, coordinateDTOS);
-        assert dtos.get(0).getText().equals("niceplace");
+        assertEquals(dtos.get(0).getText(), "niceplace");
         testSetComments(id);
         travelViewController.deleteTravel(id);
     }
@@ -94,9 +98,7 @@ public class TravelViewControllerTests {
     private void testGetRoutes(long travelId, CoordinateDTO[] coordinateDTOS) {
         List<DayRouteDTO> travelRoutes = travelViewController.getTravelRoutes(travelId);
         CoordinateDTO[] deconverted = travelRoutes.get(0).getRoute();
-        for (int i = 0; i < deconverted.length; i++) {
-            assert deconverted[i].equals(coordinateDTOS[i]);
-        }
+        assertArrayEquals(deconverted, coordinateDTOS);
     }
 
     private void testSetComments(long travelId) {
@@ -104,9 +106,9 @@ public class TravelViewControllerTests {
         CommentDTO commentDTO1 = new CommentDTO("Place3", "niceplace3", "image2", null);
         travelViewController.updateCommentsDay(travelId, 0, Lists.newArrayList(commentDTO, commentDTO1));
         List<CommentDTO> commentDTOS = travelViewController.getDayComments(travelId, 0, PageRequest.of(0, 20));
-        assert commentDTOS.size() == 2;
-        assert commentDTOS.get(0).getText().equals("niceplace2");
-        assert commentDTOS.get(1).getText().equals("niceplace3");
+        assertEquals(commentDTOS.size(), 2);
+        assertEquals(commentDTOS.get(0).getText(), "niceplace2");
+        assertEquals(commentDTOS.get(1).getText(), "niceplace3");
     }
 
     //private void testSetComments(long travelId) {

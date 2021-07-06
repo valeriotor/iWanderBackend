@@ -3,6 +3,7 @@ package com.valeriotor.iWanderBackend.datahandler;
 import com.valeriotor.iWanderBackend.auth.ApplicationUserDAO;
 import com.valeriotor.iWanderBackend.model.core.AppUser;
 import com.valeriotor.iWanderBackend.model.dto.UserFrontDTO;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ProfileDataHandlerTests {
@@ -26,8 +30,8 @@ public class ProfileDataHandlerTests {
         user.setUsername("Giuseppide");
         applicationUserDao.addUserDetails(user);
         Optional<UserFrontDTO> giuseppide = applicationUserDao.findUsersByPrefix("g", PageRequest.of(0, 10)).stream().findFirst();
-        assert giuseppide.isPresent();
-        assert giuseppide.get().getUsername().equals("Giuseppide");
+        assertTrue(giuseppide.isPresent());
+        assertEquals(giuseppide.get().getUsername(), "Giuseppide");
     }
 
     @Test
@@ -36,7 +40,7 @@ public class ProfileDataHandlerTests {
         assert applicationUserDao != null;
         Slice<UserFrontDTO> alessandri = applicationUserDao.findUsersByPrefix("Ale", PageRequest.of(0, 4));
         Slice<UserFrontDTO> valeri = applicationUserDao.findUsersByPrefix("val", PageRequest.of(0, 4));
-        assert alessandri.getNumberOfElements() == 2;
-        assert valeri.getNumberOfElements() == 1;
+        assertEquals(alessandri.getNumberOfElements(), 2);
+        assertEquals(valeri.getNumberOfElements(), 1);
     }
 }

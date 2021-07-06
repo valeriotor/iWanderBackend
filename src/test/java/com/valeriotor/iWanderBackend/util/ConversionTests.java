@@ -7,6 +7,7 @@ import com.valeriotor.iWanderBackend.model.dto.DayDTO;
 import com.valeriotor.iWanderBackend.model.dto.DayRouteDTO;
 import org.assertj.core.util.Lists;
 import org.dozer.DozerBeanMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 @SpringBootTest
 public class ConversionTests {
@@ -35,9 +39,7 @@ public class ConversionTests {
         }
         byte[] converted = ConversionUtil.routeToBytes(coordinateDTOS);
         List<CoordinateDTO> deconverted = ConversionUtil.bytesToRoute(converted);
-        for (int i = 0; i < coordinateDTOS.size(); i++) {
-            assert coordinateDTOS.get(i).equals(deconverted.get(i));
-        }
+        assertIterableEquals(coordinateDTOS, deconverted);
     }
 
     @Test
@@ -55,9 +57,7 @@ public class ConversionTests {
         Day d = mapper.map(dayDTO, Day.class);
         DayDTO dayDTO1 = mapper.map(d, DayDTO.class);
         DayRouteDTO dayRouteDTO1 = dayDTO.getRoute();
-        for (int i = 0; i < coordinateDTOS.length; i++) {
-            assert coordinateDTOS[i].equals(dayRouteDTO1.getRoute()[i]);
-        }
+        assertArrayEquals(coordinateDTOS, dayRouteDTO1.getRoute());
     }
 
 

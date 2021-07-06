@@ -4,6 +4,7 @@ import com.valeriotor.iWanderBackend.model.core.Day;
 import com.valeriotor.iWanderBackend.model.core.LocationTime;
 import com.valeriotor.iWanderBackend.model.core.TravelPlan;
 import com.valeriotor.iWanderBackend.model.dto.TravelPlanMinimumDTO;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class TravelPlanDataHandlerTests {
@@ -24,7 +26,7 @@ public class TravelPlanDataHandlerTests {
     @Test
     public void testGetTravelsByUser() {
         List<TravelPlanMinimumDTO> plansBy0 = dataHandler.getTravelsForUser("valeriotor", PageRequest.of(0, 4));
-        assert plansBy0.size() == 3;
+        assertEquals(3, plansBy0.size());
     }
 
     @Test
@@ -55,8 +57,8 @@ public class TravelPlanDataHandlerTests {
         TravelPlan updatedPlan = getFirstTravel(dataHandler);
         List<Day> newPlanDays = updatedPlan.getDays();
         List<LocationTime> newPlanFirstDayLocationTimes = newPlanDays.get(0).getLocationTimes();
-        assert newPlanDays.size() == days.size();
-        assert newPlanFirstDayLocationTimes.size() == days.get(0).getLocationTimes().size();
+        assertEquals(newPlanDays.size(), days.size());
+        assertEquals(newPlanFirstDayLocationTimes.size(), days.get(0).getLocationTimes().size());
     }
 
     private TravelPlanMinimumDTO getFirstTravelRedux(TravelPlanDataHandler dataHandler) {
